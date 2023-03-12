@@ -18,7 +18,7 @@ function DeviceData ({navigation}) {
     console.log("DeviceData",data);
     
     const handleAddIndex = async () => {
-        const response = await fetch('http://10.64.71.101:3001/add/index',{
+        const response = await fetch('http://10.64.59.12:3001/add/index',{
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',

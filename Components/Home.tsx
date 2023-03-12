@@ -45,7 +45,7 @@ const Home = ({ navigation, userId }) => {
             console.error('User ID is undefined');
             return;
         }
-        const response = await fetch(`http://10.64.71.101:3001/api/user/${id}`, {
+        const response = await fetch(`http://10.64.59.12:3001/api/user/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

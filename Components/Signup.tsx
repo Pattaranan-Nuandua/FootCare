@@ -39,7 +39,7 @@ const Signup = ({ navigation }) => {
         } else if (!ToggleCheckBox) {
             Alert.alert('กรุณายอมรับเงื่อนไขและข้อตกลง');
         } else {
-            const response = await fetch('http://10.64.71.101:3001/add', {
+            const response = await fetch('http://10.64.59.12:3001/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

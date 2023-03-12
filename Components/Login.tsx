@@ -22,7 +22,7 @@ const Login = () => {
             Alert.alert('กรุณากรอกข้อมูลให้ครบถ้วน');
         } else {
             try {
-                const response = await fetch('http://10.64.71.101:3001/login', {
+                const response = await fetch('http://10.64.59.12:3001/login', {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json',

@@ -30,7 +30,7 @@ const History = () => {
         // const datestr = moment(date).format("YYYY-MM-DD hh:mm:ss ").slice(0, 10);
         // const timestr = date.toLocaleString('it-IT').slice(10);
 
-        const response = await fetch('http://10.64.71.101:3001/show/index', {
+        const response = await fetch('http://10.64.59.12:3001/show/index', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
