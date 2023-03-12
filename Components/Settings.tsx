@@ -1,6 +1,6 @@
 import { Box } from '@react-native-material/core';
 import * as React from 'react';
-import { SafeAreaView,Text,StyleSheet,View } from 'react-native';
+import { SafeAreaView,Text,StyleSheet,View,Dimensions } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import EditProfile from './EditProfile';
@@ -8,7 +8,7 @@ import EditProfile from './EditProfile';
 const Settings =({navigation})=>{
     return(
         <SafeAreaView style={styles.contrainer}>
-            <Text style={styles.settingtext}>
+            <Text style={{ fontWeight: '700', fontSize: 22,marginTop: 10, textAlign: 'center', color: '#000' }}>
                 ตั้งค่า
             </Text>
             <View>
@@ -31,8 +31,8 @@ const Settings =({navigation})=>{
 const styles = StyleSheet.create({
     contrainer:{
         backgroundColor: "#ffff",
-        width: "100%",
-        height: "100%",
+        width: Dimensions.get('screen').width,
+        height: Dimensions.get('screen').height,
     },
     settingtext:{
         textAlign:'center',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     },
     box:{
         backgroundColor: '#f0f0f0', 
-        width:300, 
+        width:324, 
         height:50, 
         borderRadius:10,
         //marginLeft:45,

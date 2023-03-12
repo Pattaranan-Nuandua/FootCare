@@ -98,6 +98,9 @@ const Login = () => {
                     }}>
                     <Text style={{ color: 'white', alignSelf: 'center', }}>เข้าสู่ระบบ</Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
+                    <Text style={{color:'#00979C', alignSelf:'center', marginTop:30,textDecorationLine: 'underline'}}>Privacy</Text>
+                </TouchableOpacity>
             </LinearGradient>
         </View>
     );

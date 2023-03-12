@@ -43,9 +43,9 @@ const Insole = ({ navigation }) => {
                 style={styles.history}
                 onPress={() => navigation.navigate('History')}
             >
-                <Text style={{ color: '#037A7E' }}>ประวัติ</Text>
+                <Text style={{ color: '#037A7E',fontSize:16 }}>ประวัติ</Text>
             </TouchableOpacity>
-            <Text style={{ marginTop: 40, marginLeft: 30, fontWeight: '500' }} >ลักษณะการลงน้ำหนัก: </Text>
+            <Text style={{ marginTop: 40, marginLeft: 30, fontWeight: '300' }} >ลักษณะการลงน้ำหนัก: </Text>
             <Image source={{ uri: logo }}
                 style={styles.image} />
             <View style={styles.dataContainer}>
@@ -77,7 +77,7 @@ const Insole = ({ navigation }) => {
 const styles = StyleSheet.create({
     history: {
         marginTop: -20,
-        marginLeft: 330,
+        marginLeft: 340,
     },
     image: {
         width: '80%',
@@ -94,9 +94,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        //justifyContent: 'center',
-        //alignItems: 'center',
-        //backgroundColor: '#F5FCFF',
+        backgroundColor: '#FFF',
         marginTop: 30,
     },
     boxtest: {

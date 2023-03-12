@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SetStateAction,useContext,createContext } from 'react';
+import React, { useState, useEffect, SetStateAction, useContext, createContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { BleManager, Characteristic, Device } from 'react-native-ble-plx';
 import { Button } from '@react-native-material/core';
@@ -13,18 +13,18 @@ const SERVICE_UUID = "fe8775b4-243b-4aae-a7b8-c4c3ed0f55e3"; //use
 const CHARACTERISTIC_BLE = "ae41c84a-2fc1-4b66-8531-02e76eb67315"; //use
 
 
-function DeviceData ({navigation}) {
-    const {data,setData} = useContext(MyContext)
-    console.log("DeviceData",data);
-    
+function DeviceData({ navigation }) {
+    const { data, setData } = useContext(MyContext)
+    console.log("DeviceData", data);
+
     const handleAddIndex = async () => {
-        const response = await fetch('http://10.64.59.12:3001/add/index',{
+        const response = await fetch('http://10.64.59.12:3001/add/index', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
             },
             //({...data})
-            body: JSON.stringify({...data}),
+            body: JSON.stringify({ ...data }),
         })
         //.then ((response) =>  response.json())
         const index = await response.json();
@@ -56,7 +56,7 @@ function DeviceData ({navigation}) {
             bleManager.stopDeviceScan();
         }, 5000);
     }
-    
+
 
     async function handleConnect(device: Device) {
         console.log('connecting to Device:', device.name);
@@ -90,7 +90,7 @@ function DeviceData ({navigation}) {
                             const valueString = characteristic?.value.toString();
                             setData(JSON.parse(base64.decode(valueString)));
                             //navigation.navigate('Insole');
-                            setInterval(handleAddIndex,1000);
+                            setInterval(handleAddIndex, 1000);
                         }
                     },
                     'messagetransaction'
@@ -100,18 +100,22 @@ function DeviceData ({navigation}) {
     }
 
     async function disconnectDevice() {
-        console.log('Disconnecting start');
-        if (connectedDevice != null) {
-            const isDeviceConnected = await connectedDevice.isConnected();
-            if (isDeviceConnected) {
-                bleManager.cancelTransaction('messagetransaction');
-                bleManager.cancelTransaction('nightmodetransaction');
-                bleManager.cancelDeviceConnection(connectedDevice.id).then(() => console.log('DC completed'));
-            }
-            const connectionStatus = await connectedDevice.isConnected();
-            if (!connectionStatus) {
+        console.log('Disconnect!');
+        if (connectedDevice) {
+            try {
+                const isDeviceConnected = await connectedDevice.isConnected();
+                if (isDeviceConnected) {
+                    await bleManager.cancelTransaction('messagetransaction');
+                    await bleManager.cancelTransaction('nightmodetransaction');
+                    await bleManager.cancelDeviceConnection(connectedDevice.id);
+                    console.log('Device disconnected successfully.');
+                }
                 setIsConnected(false);
+            } catch (error) {
+                console.error('Failed to disconnect device:', error);
             }
+        } else {
+            console.warn('No connected device found.');
         }
     }
 
@@ -128,38 +132,13 @@ function DeviceData ({navigation}) {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={() => scanDevices() }>
-                <Text style={styles.text}>Scan Devices</Text>
+            <Text style={styles.text}>ค้นหาอุปกรณ์</Text>
+            <TouchableOpacity style={styles.button} onPress={() => scanDevices()}>
+                <Text style={{color:'#fff'}}>ค้นหาอุปกรณ์</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => disconnectDevice()}>
-                <Text style={styles.text}>Disconnect</Text>
-            </TouchableOpacity> 
-            {/* <MyContext.Provider value={{data}}>
-                {props.children} */}
-                {/* <Heatmap/> */}
-            {/* <View style={styles.dataContainer}>
-                <View style={styles.dataGroup}>
-                    
-                    <Text style={[styles.dataText, { color: getColor(data.ADC11) }]}>ADC11: {data.ADC11}</Text>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC12) }]}>ADC12: {data.ADC12}</Text>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC13) }]}>ADC13: {data.ADC13}</Text>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC14) }]}>ADC14: {data.ADC14}</Text>
-                </View>
-                <View style={styles.dataGroup}>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC21) }]}>ADC21: {data.ADC21}</Text>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC22) }]}>ADC22: {data.ADC22}</Text>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC23) }]}>ADC23: {data.ADC23}</Text>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC24) }]}>ADC24: {data.ADC24}</Text>
-                </View>
-                <View style={styles.dataGroup}>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC31) }]}>ADC31: {data.ADC31}</Text>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC32) }]}>ADC32: {data.ADC32}</Text>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC33) }]}>ADC33: {data.ADC33}</Text>
-                    <Text style={[styles.dataText, { color: getColor(data.ADC34) }]}>ADC34: {data.ADC34}</Text>
-                </View>
-                
-            </View> */}
-            {/* </MyContext.Provider> */}
+            <TouchableOpacity style={styles.btndcn} onPress={() => disconnectDevice()}>
+                <Text style={{color:'#fff'}}>ยกเลิกการจับคู่</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -169,21 +148,31 @@ export default DeviceData;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        //backgroundColor: '#F5FCFF',
-        marginTop:50,
+        backgroundColor:'#fff',
+        width:'100%',
+        height:'100%'
     },
     button: {
         padding: 10,
         margin: 10,
-        backgroundColor: '#2196F3',
+        backgroundColor: '#00979C',
+        borderRadius: 5,    
+        justifyContent:'center',
+        alignSelf:'center',
+        marginTop:280
+    },
+    btndcn:{
+        padding: 10,
+        margin: 10,
+        backgroundColor: '#8B0000',
         borderRadius: 5,
+        justifyContent:'center',
+        alignSelf:'center',
     },
     text: {
-        color: '#fff',
         fontSize: 20,
+        marginTop:50,
+        textAlign:'center',
     },
     dataContainer: {
         flex: 1,

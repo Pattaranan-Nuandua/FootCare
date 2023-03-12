@@ -59,6 +59,7 @@ const History = () => {
 
     return (
         <View style={styles.container}>
+            <Text style={{ fontWeight: '700', fontSize: 22, marginTop: 30, textAlign: 'center', color: '#000'}}>ประวัติ</Text>
             <Button title="ประวัติ" color={'#037A7E'} onPress={() => setOpen(true)}/>
             <DateTimePickerModal
                 mode="datetime"

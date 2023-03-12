@@ -122,7 +122,7 @@ const Home = ({ navigation, userId }) => {
     };
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.text} >{"ยินดีต้อนรับ"}</Text>
+            <Text style={styles.text}>{"ยินดีต้อนรับ"}</Text>
             <View>
                 <Icon
                     name="add"
@@ -158,22 +158,21 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height,
         flex: 1,
         backgroundColor: "#ffff",
-        //width: "100%",
         //height: "100%",
         alignItems: 'center',
-        //marginTop:100,
+        marginTop:-30,
     },
     text: {
         fontSize: 20,
         color: '#00979C',
         fontWeight: 'bold',
         marginRight: 100,
-        marginLeft: -100,
+        marginLeft: -130,
         marginTop: 40,
     },
     box: {
         backgroundColor: '#f0f0f0',
-        width: 320,
+        width: 340,
         height: 220,
         borderRadius: 18,
         //marginLeft:45,
@@ -182,12 +181,12 @@ const styles = StyleSheet.create({
     icon: {
         //marginBottom: 20,
         marginTop: -25,
-        marginLeft: 220
+        marginLeft: 240
     },
     textaddDevice: {
         fontSize: 15,
         marginTop: -22,
-        marginLeft: 245,
+        marginLeft: 265,
         color: '#00979C',
         //fontWeight: 'bold',
     },

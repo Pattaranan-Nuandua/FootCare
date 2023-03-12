@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView,Text,StyleSheet,TextInput,TouchableOpacity } from 'react-native';
+import { SafeAreaView,Text,StyleSheet,TextInput,TouchableOpacity,Dimensions } from 'react-native';
 import { Button} from '@react-native-material/core';
 
 const EditProfile = ({navigation})=>{
@@ -13,7 +13,7 @@ const EditProfile = ({navigation})=>{
 
     return(
         <SafeAreaView style={styles.container}>
-            <Text style={styles.textforgetpassword} >
+            <Text style={{ fontWeight: '700', fontSize: 22,marginTop: 10, textAlign: 'center', color: '#000' }} >
                 แก้ไขข้อมูล
             </Text>
             <Text style={styles.textusername}>Email</Text>
@@ -71,10 +71,8 @@ const EditProfile = ({navigation})=>{
 const styles = StyleSheet.create({
     container:{
         backgroundColor: "#ffff",
-        width: "100%",
-        height: "100%",
-        //alignSelf: 'center',
-        //justifyContent: 'center',
+        width: Dimensions.get('screen').width,
+        height: Dimensions.get('screen').height,
     },
     checkboxContainer: {
         flexDirection: 'row',
