@@ -13,10 +13,9 @@ const Resetpassword =({navigation})=>{
 
     return(
         <SafeAreaView style={styles.container}>
-            <Text style={styles.textforgetpassword} >
+            <Text style={{ fontWeight: '700', fontSize: 22, marginTop: 30, textAlign: 'center', color: '#000' }} >
                 ลืมรหัสผ่าน
             </Text>
-            
             <Text style={styles.textusername}>Username</Text>
             <TextInput
                 style={styles.input}
@@ -50,8 +49,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFF",
         width: "100%",
         height: "100%",
-        //alignItems: 'center',
-        //justifyContent: 'center',
     },
     textforgetpassword:{
         textAlign:'center',
