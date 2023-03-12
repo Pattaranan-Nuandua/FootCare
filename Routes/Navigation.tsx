@@ -1,9 +1,8 @@
-import * as React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons'
-import { Device } from 'react-native-ble-plx';
 
 //Components
 import Login from '../Components/Login';
@@ -17,7 +16,7 @@ import ConnectBLE from '../Components/ConnectBLE';
 import Heatmap from '../Components/Heatmap';
 import History from '../Components/History';
 import EditProfile from '../Components/EditProfile';
-import Settings  from '../Components/Settings';
+import Settings from '../Components/Settings';
 import Privacy from '../Components/Privacy';
 
 //Context
@@ -25,34 +24,19 @@ import TestProvider from '../Components/TestProvider';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator<RootStackParamList>();
-const LoginStack = createStackNavigator();
+const isLoggedIn = true;
 
 export type RootStackParamList = {
     SplashScreen: undefined;
     BottomTabNavScreenGroup: undefined;
-    Signup : undefined;
-    Resetpassword : undefined;
-    ConnectBLE : undefined;
-    Heatmap : undefined;
-    History : undefined;
-    EditProfile : undefined;
-    Privacy : undefined;
-    testHM : undefined;
-    Device: { device: Device };
-};
-
-const LoginStackScreen = () => {
-    return (
-        <LoginStack.Navigator>
-            <LoginStack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Login"
-                component={Login}
-            />
-        </LoginStack.Navigator>
-    );
+    Signup: undefined;
+    Resetpassword: undefined;
+    ConnectBLE: undefined;
+    Heatmap: undefined;
+    History: undefined;
+    EditProfile: undefined;
+    Privacy: undefined;
+    testHM: undefined;
 };
 
 const BottomTabNavScreenGroup = () => {
@@ -119,30 +103,33 @@ const BottomTabNavScreenGroup = () => {
         </Tab.Navigator>
     )
 }
-
 const MainStackScreen = () => {
+    const [isLoaded, setIsLoaded] = useState(false);
+    useEffect(() => {
+        setTimeout(() => {
+            setIsLoaded(true);
+        }, 3000); // Delay for 3 seconds
+    }, []);
+    if (!isLoaded) {
+        return (
+            <Stack.Navigator initialRouteName="SplashScreen">
+                <Stack.Screen
+                    options={{
+                        headerShown: false,
+                    }}
+                    name="SplashScreen"
+                    component={SplashScreen}
+                />
+            </Stack.Navigator>
+        );
+    }
     return (
-        //mode="card"
-        <Stack.Navigator initialRouteName="SplashScreen">
+        <Stack.Navigator initialRouteName="Home">
             <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
-                name="SplashScreen"
-                component={SplashScreen}
-            />
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="LoginStackScreen"
-                component={LoginStackScreen}
-            />
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="BottomTabNavScreenGroup"
+                name="Home"
                 component={BottomTabNavScreenGroup}
             />
             <Stack.Screen
@@ -159,54 +146,131 @@ const MainStackScreen = () => {
                 name="Resetpassword"
                 component={Resetpassword}
             />
-            <Stack.Screen     
+            <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
                 name="ConnectBLE"
                 component={ConnectBLE}
             />
-            <Stack.Screen     
+            <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
                 name="Heatmap"
                 component={Heatmap}
             />
-            <Stack.Screen     
+            <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
                 name="History"
                 component={History}
             />
-            <Stack.Screen     
+            <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
                 name="EditProfile"
                 component={EditProfile}
             />
-            <Stack.Screen     
+            <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
                 name="Privacy"
                 component={Privacy}
             />
-            
         </Stack.Navigator>
-    )
-}
+    );
+};
 
 const Navigation = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     return (
         <TestProvider>
             <NavigationContainer>
-                <MainStackScreen />
+                {isLoggedIn ? (
+                    <Stack.Navigator initialRouteName="BottomTabNavScreenGroup">
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name="Signup"
+                            component={Signup}
+                        />
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name="Resetpassword"
+                            component={Resetpassword}
+                        />
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name="ConnectBLE"
+                            component={ConnectBLE}
+                        />
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name="Heatmap"
+                            component={Heatmap}
+                        />
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name="History"
+                            component={History}
+                        />
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name="EditProfile"
+                            component={EditProfile}
+                        />
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name="Privacy"
+                            component={Privacy}
+                        />
+                    </Stack.Navigator>
+                ) : (
+                    <Stack.Navigator initialRouteName="SplashScreen">
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name="SplashScreen"
+                            component={SplashScreen}
+                        />
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name="Login"
+                            component={Login}
+                        />
+                        <Stack.Screen
+                            options={{
+                                headerShown: false,
+                            }}
+                            name="BottomTabNavScreenGroup"
+                            component={BottomTabNavScreenGroup}
+                        />
+                    </Stack.Navigator>
+                )}
             </NavigationContainer>
         </TestProvider>
-    )
+    );
 };
+
 
 export default Navigation;

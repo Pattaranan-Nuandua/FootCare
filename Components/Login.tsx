@@ -5,10 +5,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button } from '@react-native-material/core';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { NavigationHelpers, StackActions } from '@react-navigation/native';
 import logofoot from '../Image/logo.png';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 const logo = Image.resolveAssetSource(logofoot).uri;
+interface Props {
+    navigation: NavigationHelpers<any, any>;
+}
 
 const Login = () => {
     const [username, setUsername] = useState('')
@@ -43,7 +47,8 @@ const Login = () => {
                         console.log(indextoken)
                         Alert.alert('เข้าสู่ระบบสำเร็จ');
                         //'Successfully Login'
-                        navigation.navigate('Home');
+                        //navigation.navigate('Home');
+                        navigation.dispatch(StackActions.replace('BottomTabNavScreenGroup'));
                     } else {
                         Alert.alert(data.status, data.message)
                     }

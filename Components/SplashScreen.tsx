@@ -9,7 +9,7 @@ interface Props {
 
 const SplashScreen = ({ navigation }: Props) => {
     setTimeout(() => {
-        navigation.dispatch(StackActions.replace('BottomTabNavScreenGroup'));
+        navigation.dispatch(StackActions.replace('Login'));
     }, 2000);
     const logo = Image.resolveAssetSource(logofoot).uri;
     return (
