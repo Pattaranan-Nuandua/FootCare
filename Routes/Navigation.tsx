@@ -123,20 +123,20 @@ const BottomTabNavScreenGroup = () => {
 const MainStackScreen = () => {
     return (
         //mode="card"
-        <Stack.Navigator >
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="LoginStackScreen"
-                component={LoginStackScreen}
-            />
+        <Stack.Navigator initialRouteName="SplashScreen">
             <Stack.Screen
                 options={{
                     headerShown: false,
                 }}
                 name="SplashScreen"
                 component={SplashScreen}
+            />
+            <Stack.Screen
+                options={{
+                    headerShown: false,
+                }}
+                name="LoginStackScreen"
+                component={LoginStackScreen}
             />
             <Stack.Screen
                 options={{
