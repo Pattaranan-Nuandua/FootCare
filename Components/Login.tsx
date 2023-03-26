@@ -1,64 +1,58 @@
 import React, { Component, useState, useEffect } from 'react';
-import { StyleSheet, TextInput, View, Text, Image, Alert, TouchableOpacity, Dimensions } from "react-native";
-//import AsyncStorage from '@react-native-community/async-storage';
+import { StyleSheet, TextInput, View, Text, Image, Alert, TouchableOpacity, Dimensions, KeyboardAvoidingView, } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Button } from '@react-native-material/core';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { NavigationHelpers, StackActions } from '@react-navigation/native';
 import logofoot from '../Image/logo.png';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
-const logo = Image.resolveAssetSource(logofoot).uri;
-interface Props {
-    navigation: NavigationHelpers<any, any>;
-}
 
-const Login = () => {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const navigation = useNavigation();
+const logo = Image.resolveAssetSource(logofoot).uri;
+
+const Login = ({ route, navigation }) => {
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [user, setUser] = useState<object | null>(null);
+
     const handleLogin = async () => {
-        if (
-            username.length === 0 ||
-            password.length === 0 
-        ) {
+        if (username.length === 0 || password.length === 0) {
             Alert.alert('กรุณากรอกข้อมูลให้ครบถ้วน');
         } else {
             try {
-                const response = await fetch('http://10.64.59.12:3001/login', {
+                const response = await fetch('http://10.64.57.59:3001/login', {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json',
-                        'Accept': 'application/json',
+                        Accept: 'application/json',
                     },
                     body: JSON.stringify({
-                        username: username,
-                        password: password,
+                        username,
+                        password,
                     }),
                 });
+
                 if (!response.ok) {
-                    console.error(`Error logging in: ${response.statusText}`);
+                    const errorData = await response.json();
+                    const errorMessage = errorData.message || 'เกิดข้อผิดพลาดในการเชื่อมต่อ';
+                    throw new Error(errorMessage);
+                }
+
+                const data = await response.json();
+                console.log(data);
+
+                if (data.status === 'ok') {
+                    await AsyncStorage.setItem('@accessToken', JSON.stringify(data.accessToken));
+                    console.log(data.accessToken);
+                    Alert.alert('เข้าสู่ระบบสำเร็จ');
+                    navigation.navigate('BottomTabNavScreenGroup', { user: data });
                 } else {
-                    const data = await response.json()
-                    if (data.status === 'ok') {
-                        await AsyncStorage.setItem('@accessToken', JSON.stringify(data));
-                        const indextoken = await AsyncStorage.getItem("@accessToken")
-                        console.log(indextoken)
-                        Alert.alert('เข้าสู่ระบบสำเร็จ');
-                        //'Successfully Login'
-                        //navigation.navigate('Home');
-                        navigation.dispatch(StackActions.replace('BottomTabNavScreenGroup'));
-                    } else {
-                        Alert.alert(data.status, data.message)
-                    }
+                    Alert.alert(data.status, data.message);
                 }
             } catch (err) {
                 console.error('Error logging in:', err);
                 Alert.alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
             }
         }
-    }
+    };
+
     return (
         <View>
             <LinearGradient
@@ -92,7 +86,6 @@ const Login = () => {
                     <Text style={styles.textforget}>ลืมรหัสผ่าน ?</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={handleLogin}
                     style={{
                         width: 150,
                         padding: 10,
@@ -100,11 +93,12 @@ const Login = () => {
                         alignSelf: 'center',
                         borderRadius: 10,
                         marginTop: 30,
-                    }}>
+                    }}
+                    onPress={handleLogin}>
                     <Text style={{ color: 'white', alignSelf: 'center', }}>เข้าสู่ระบบ</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
-                    <Text style={{color:'#00979C', alignSelf:'center', marginTop:30,textDecorationLine: 'underline'}}>Privacy</Text>
+                    <Text style={{ color: '#00979C', alignSelf: 'center', marginTop: 30, textDecorationLine: 'underline' }}>Privacy</Text>
                 </TouchableOpacity>
             </LinearGradient>
         </View>
@@ -115,6 +109,7 @@ const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height,
+
     },
     image: {
         marginTop: 120,

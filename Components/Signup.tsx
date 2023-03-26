@@ -35,14 +35,14 @@ const Signup = ({ navigation }) => {
             gender.length === 0 ||
             details.length === 0
         ) {
-            Alert.alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+            Alert.alert("กรุณากรอกข้อมูลให้ครบถ้วน");
         } else if (!ToggleCheckBox) {
-            Alert.alert('กรุณายอมรับเงื่อนไขและข้อตกลง');
+            Alert.alert("กรุณายอมรับเงื่อนไขและข้อตกลง");
         } else {
-            const response = await fetch('http://10.64.59.12:3001/add', {
-                method: 'POST',
+            const response = await fetch("http://10.64.57.59:3001/add", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     email: email,
@@ -54,15 +54,14 @@ const Signup = ({ navigation }) => {
                     high: high,
                     age: age,
                     gender: gender,
-                    details: details
-                })
-                //navigation.navigate('Login')
-            })
+                    details: details,
+                }),
+            });
             if (response.ok) {
-                Alert.alert('ลงทะเบียนสำเร็จ');
-                navigation.navigate('Logout');
+                Alert.alert("ลงทะเบียนสำเร็จ");
+                navigation.navigate("Login");
             } else {
-                Alert.alert('เกิดข้อผิดพลาดในการลงทะเบียน');
+                Alert.alert("เกิดข้อผิดพลาดในการลงทะเบียน");
             }
         }
     };

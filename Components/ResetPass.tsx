@@ -39,7 +39,7 @@ const Resetpassword =({navigation})=>{
             color="#00979C" 
             tintColor="white" 
             style={styles.button2}
-            onPress={() => navigation.navigate('Logout')} />
+            onPress={() => navigation.navigate('Login')} />
             
         </SafeAreaView>
     )

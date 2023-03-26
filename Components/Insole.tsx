@@ -36,37 +36,84 @@ const Insole = ({ navigation }) => {
         const index = await response.json()
         console.log(index);
     }
+
+    //const { data } = useContext(MyContext);
+    const checkFoot = () => {
+        if (
+            parseInt(data.ADC11) >= 10000 &&
+            parseInt(data.ADC12) >= 10000 &&
+            parseInt(data.ADC13) >= 10000 &&
+            parseInt(data.ADC14) >= 10000 &&
+            parseInt(data.ADC21) >= 10000 &&
+            parseInt(data.ADC22) >= 10000 &&
+            parseInt(data.ADC23) >= 10000 &&
+            parseInt(data.ADC24) >= 10000 &&
+            parseInt(data.ADC31) >= 10000 &&
+            parseInt(data.ADC32) >= 10000 &&
+            parseInt(data.ADC33) >= 10000 &&
+            parseInt(data.ADC34) >= 10000
+        ) {
+            return 'เท้าปกติ';
+        } else if (
+            parseInt(data.ADC11) < 10000 ||
+            parseInt(data.ADC12) < 10000 ||
+            parseInt(data.ADC13) < 10000 ||
+            parseInt(data.ADC14) < 10000 ||
+            parseInt(data.ADC22) < 10000 ||
+            parseInt(data.ADC23) < 10000 ||
+            parseInt(data.ADC24) < 10000 ||
+            parseInt(data.ADC31) < 10000 ||
+            parseInt(data.ADC33) < 10000 ||
+            parseInt(data.ADC34) < 10000
+        ) {
+            return 'เท้าแบน';
+        } else if (
+            parseInt(data.ADC11) >= 10000 &&
+            parseInt(data.ADC12) >= 10000 &&
+            parseInt(data.ADC13) >= 10000 &&
+            parseInt(data.ADC14) >= 10000 &&
+            parseInt(data.ADC22) >= 10000 &&
+            parseInt(data.ADC31) >= 10000 &&
+            parseInt(data.ADC32) >= 10000 &&
+            parseInt(data.ADC33) >= 10000 &&
+            parseInt(data.ADC34) >= 10000
+        ) {
+            return 'อุ้งเท้าสูง';
+        } else {
+            return 'ไม่มีการลงน้ำหนักเท้า';
+        }
+    };
     return (
         <View style={styles.container}>
-            <Text style={{ fontWeight: '700', fontSize: 22, marginTop: 30, textAlign: 'center', color: '#000' }}>Heatmap</Text>
+            <Text style={{ fontWeight: '700', fontSize: 22, marginTop: 60, textAlign: 'center', color: '#000' }}>Heatmap</Text>
             <TouchableOpacity
                 style={styles.history}
                 onPress={() => navigation.navigate('History')}
             >
                 <Text style={{ color: '#037A7E',fontSize:16 }}>ประวัติ</Text>
             </TouchableOpacity>
-            <Text style={{ marginTop: 40, marginLeft: 30, fontWeight: '300' }} >ลักษณะการลงน้ำหนัก: </Text>
+            <Text style={{ marginTop: 40, marginLeft: 30, fontWeight: '300' }} >ลักษณะการลงน้ำหนัก: {checkFoot()}</Text>
             <Image source={{ uri: logo }}
                 style={styles.image} />
             <View style={styles.dataContainer}>
                 <View style={styles.dataGroup}>
                     <View style={styles.dataGroup1}>
-                        <Text style={[styles.dataText1, { backgroundColor: getColors(data.ADC11) }]}>{data.ADC11}</Text>
-                        <Text style={[styles.dataText2, { backgroundColor: getColors(data.ADC12) }]}>{data.ADC12}</Text>
-                        <Text style={[styles.dataText3, { backgroundColor: getColors(data.ADC13) }]}>{data.ADC13}</Text>
-                        <Text style={[styles.dataText4, { backgroundColor: getColors(data.ADC14) }]}>{data.ADC14}</Text>
+                        <Text style={[styles.dataText1, { backgroundColor: getColors(data.ADC11) }]}></Text>
+                        <Text style={[styles.dataText2, { backgroundColor: getColors(data.ADC13) }]}></Text>
+                        <Text style={[styles.dataText3, { backgroundColor: getColors(data.ADC21) }]}></Text>
+                        <Text style={[styles.dataText4, { backgroundColor: getColors(data.ADC12) }]}></Text>
                     </View>
                     <View>
-                        <Text style={[styles.dataText5, { backgroundColor: getColors(data.ADC21) }]}>{data.ADC21}</Text>
-                        <Text style={[styles.dataText6, { backgroundColor: getColors(data.ADC22) }]}>{data.ADC22}</Text>
-                        <Text style={[styles.dataText7, { backgroundColor: getColors(data.ADC23) }]}>{data.ADC23}</Text>
-                        <Text style={[styles.dataText8, { backgroundColor: getColors(data.ADC24) }]}>{data.ADC24}</Text>
+                        <Text style={[styles.dataText5, { backgroundColor: getColors(data.ADC23) }]}></Text>
+                        <Text style={[styles.dataText6, { backgroundColor: getColors(data.ADC22) }]}></Text>
+                        <Text style={[styles.dataText7, { backgroundColor: getColors(data.ADC14) }]}></Text>
+                        <Text style={[styles.dataText8, { backgroundColor: getColors(data.ADC32) }]}></Text>
                     </View>
                     <View>
-                        <Text style={[styles.dataText9, { backgroundColor: getColors(data.ADC31) }]}>{data.ADC31}</Text>
-                        <Text style={[styles.dataText10, { backgroundColor: getColors(data.ADC32) }]}>{data.ADC32}</Text>
-                        <Text style={[styles.dataText11, { backgroundColor: getColors(data.ADC33) }]}>{data.ADC33}</Text>
-                        <Text style={[styles.dataText12, { backgroundColor: getColors(data.ADC34) }]}>{data.ADC34}</Text>
+                        <Text style={[styles.dataText9, { backgroundColor: getColors(data.ADC24) }]}></Text>
+                        <Text style={[styles.dataText10, { backgroundColor: getColors(data.ADC34) }]}></Text>
+                        <Text style={[styles.dataText11, { backgroundColor: getColors(data.ADC31) }]}></Text>
+                        <Text style={[styles.dataText12, { backgroundColor: getColors(data.ADC33) }]}></Text>
                     </View>
                 </View>
                 <BarChart />
@@ -80,8 +127,8 @@ const styles = StyleSheet.create({
         marginLeft: 340,
     },
     image: {
-        width: '80%',
-        height: '60%',
+        width: '85%',
+        height: '61%',
         alignSelf: 'center',
         justifyContent: 'center',
         marginTop: 30
@@ -95,7 +142,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#FFF',
-        marginTop: 30,
+        //marginTop: 30,
+        width: Dimensions.get('screen').width,
+        height: Dimensions.get('screen').height,
     },
     boxtest: {
         width: 200,
@@ -138,27 +187,27 @@ const styles = StyleSheet.create({
         //marginTop: 50,
     },
     dataText1: {
-        marginTop: -465,
+        marginTop: -500,
         marginLeft: 120,
         padding: 2,
         borderWidth: 0.1,
-        height: 25,
+        height: 35,
         width: 45,
     },
     dataText2: {
         borderWidth: 0.1,
-        marginTop: 10,
+        marginTop: 0,
         padding: 2,
         marginLeft: 220,
-        height: 25,
+        height: 35,
         width: 45,
     },
     dataText3: {
         borderWidth: 0.1,
-        marginTop: 20,
+        marginTop: 10,
         padding: 2,
-        marginLeft: 230,
-        height: 25,
+        marginLeft: 260,
+        height: 35,
         width: 45,
     },
     dataText4: {
@@ -166,71 +215,71 @@ const styles = StyleSheet.create({
         marginTop: -50,
         padding: 2,
         marginLeft: 110,
-        height: 25,
+        height: 35,
         width: 45,
     },
     dataText5: {
         borderWidth: 0.1,
-        marginTop: -355,
+        marginTop: -375,
         padding: 2,
-        marginLeft: 185,
-        height: 25,
+        marginLeft: 220,
+        height: 35,
         width: 45,
     },
     dataText6: {
         borderWidth: 0.1,
-        marginTop: -10,
+        marginTop: 20,
         padding: 2,
-        marginLeft: 250,
-        height: 25,
+        marginLeft: 260,
+        height: 35,
         width: 45,
     },
     dataText7: {
         borderWidth: 0.1,
-        marginTop: 5,
+        marginTop: -45,
         padding: 2,
         marginLeft: 200,
-        height: 25,
+        height: 35,
         width: 45,
     },
     dataText8: {
         borderWidth: 0.1,
-        marginTop: 10,
+        marginTop: 15,
         padding: 2,
-        marginLeft: 240,
-        height: 25,
+        marginLeft: 220,
+        height: 35,
         width: 45,
     },
     dataText9: {
         borderWidth: 0.1,
         marginTop: -235,
         padding: 2,
-        marginLeft: 200,
-        height: 25,
+        marginLeft: 250,
+        height: 35,
         width: 45,
     },
     dataText10: {
         borderWidth: 0.1,
-        marginTop: 15,
+        marginTop: 8,
         padding: 2,
-        marginLeft: 185,
-        height: 25,
+        marginLeft: 200,
+        height: 35,
         width: 45,
     },
     dataText11: {
         borderWidth: 0.1,
-        marginTop: 15,
+        marginTop: 10,
         padding: 2,
-        marginLeft: 220,
-        height: 25,
+        marginLeft: 250,
+        height: 35,
         width: 45,
     },
     dataText12: {
         borderWidth: 0.1,
-        marginTop: 20,
+        marginTop: 10,
         padding: 2,
-        marginLeft: 210,
-        height: 25,
+        marginLeft: 230,
+        height: 35,
         width: 45,
     },
 

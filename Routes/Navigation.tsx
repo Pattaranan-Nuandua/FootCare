@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons'
+import { View, Text, Modal, StyleSheet, TouchableOpacity } from 'react-native';
 
 //Components
 import Login from '../Components/Login';
@@ -21,6 +22,7 @@ import Privacy from '../Components/Privacy';
 
 //Context
 import TestProvider from '../Components/TestProvider';
+import { Button } from '@react-native-material/core';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator<RootStackParamList>();
@@ -37,151 +39,75 @@ export type RootStackParamList = {
     EditProfile: undefined;
     Privacy: undefined;
     testHM: undefined;
+    Home: undefined;
+    Login: undefined;
 };
 
-const BottomTabNavScreenGroup = () => {
+const BottomTabNavScreenGroup=()=> {
     return (
-        <Tab.Navigator
-            screenOptions={({ route }) => ({
-                tabBarIcon: ({ color, size }) => {
-                    let iconName = '';
-                    switch (route.name) {
-                        case 'Home':
-                            iconName = 'home';
-                            break;
-                        case 'Active':
-                            iconName = 'man';
-                            break;
-                        case 'Insole':
-                            iconName = 'analytics-outline';
-                            break;
-                        case 'Settings':
-                            iconName = 'settings';
-                            break;
-                        case 'Logout':
-                            iconName = 'ios-log-out-outline';
-                            break;
-                    }
-                    return <Icon name={iconName} size={size} color='#00979C' />;
-                },
-            })}>
-            <Tab.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Home"
-                component={Home}
-            />
-            <Tab.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Active"
-                component={Active}
-            />
-            <Tab.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Insole"
-                component={Insole}
-            />
-            <Tab.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Settings"
-                component={Settings}
-            />
-            <Tab.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Logout"
-                component={Login}
-            />
-        </Tab.Navigator>
-    )
-}
-const MainStackScreen = () => {
-    const [isLoaded, setIsLoaded] = useState(false);
-    useEffect(() => {
-        setTimeout(() => {
-            setIsLoaded(true);
-        }, 3000); // Delay for 3 seconds
-    }, []);
-    if (!isLoaded) {
-        return (
-            <Stack.Navigator initialRouteName="SplashScreen">
-                <Stack.Screen
+        <>
+            <Tab.Navigator
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ color, size }) => {
+                        let iconName = "";
+                        switch (route.name) {
+                            case "Home":
+                                iconName = "home";
+                                break;
+                            case "Active":
+                                iconName = "man";
+                                break;
+                            case "Insole":
+                                iconName = "analytics-outline";
+                                break;
+                            case "Settings":
+                                iconName = "settings";
+                                break;
+                            case "Logout":
+                                iconName = "ios-log-out-outline";
+                                break;
+                        }
+                        return <Icon name={iconName} size={size} color="#00979C" />;
+                    },
+                })}
+            >
+                <Tab.Screen
                     options={{
                         headerShown: false,
                     }}
-                    name="SplashScreen"
-                    component={SplashScreen}
+                    name="Home"
+                    component={Home}
                 />
-            </Stack.Navigator>
-        );
-    }
-    return (
-        <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Home"
-                component={BottomTabNavScreenGroup}
-            />
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Signup"
-                component={Signup}
-            />
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Resetpassword"
-                component={Resetpassword}
-            />
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="ConnectBLE"
-                component={ConnectBLE}
-            />
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Heatmap"
-                component={Heatmap}
-            />
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="History"
-                component={History}
-            />
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="EditProfile"
-                component={EditProfile}
-            />
-            <Stack.Screen
-                options={{
-                    headerShown: false,
-                }}
-                name="Privacy"
-                component={Privacy}
-            />
-        </Stack.Navigator>
+                <Tab.Screen
+                    options={{
+                        headerShown: false,
+                    }}
+                    name="Active"
+                    component={Active}
+                />
+                <Tab.Screen
+                    options={{
+                        headerShown: false,
+                    }}
+                    name="Insole"
+                    component={Insole}
+                />
+                <Tab.Screen
+                    options={{
+                        headerShown: false,
+                    }}
+                    name="Settings"
+                    component={Settings}
+                />
+                <Tab.Screen
+                    options={{
+                        headerShown: false,
+                    }}
+                    name="Logout"
+                    component={Login}
+                />
+            </Tab.Navigator>
+        </>
     );
 };
 
@@ -190,83 +116,78 @@ const Navigation = () => {
     return (
         <TestProvider>
             <NavigationContainer>
-                {isLoggedIn ? (
-                    <Stack.Navigator initialRouteName="BottomTabNavScreenGroup">
-                        <Stack.Screen
-                            options={{
-                                headerShown: false,
-                            }}
-                            name="Signup"
-                            component={Signup}
-                        />
-                        <Stack.Screen
-                            options={{
-                                headerShown: false,
-                            }}
-                            name="Resetpassword"
-                            component={Resetpassword}
-                        />
-                        <Stack.Screen
-                            options={{
-                                headerShown: false,
-                            }}
-                            name="ConnectBLE"
-                            component={ConnectBLE}
-                        />
-                        <Stack.Screen
-                            options={{
-                                headerShown: false,
-                            }}
-                            name="Heatmap"
-                            component={Heatmap}
-                        />
-                        <Stack.Screen
-                            options={{
-                                headerShown: false,
-                            }}
-                            name="History"
-                            component={History}
-                        />
-                        <Stack.Screen
-                            options={{
-                                headerShown: false,
-                            }}
-                            name="EditProfile"
-                            component={EditProfile}
-                        />
-                        <Stack.Screen
-                            options={{
-                                headerShown: false,
-                            }}
-                            name="Privacy"
-                            component={Privacy}
-                        />
-                    </Stack.Navigator>
-                ) : (
-                    <Stack.Navigator initialRouteName="SplashScreen">
-                        <Stack.Screen
-                            options={{
-                                headerShown: false,
-                            }}
-                            name="SplashScreen"
-                            component={SplashScreen}
-                        />
-                        <Stack.Screen
-                            options={{
-                                headerShown: false,
-                            }}
-                            name="Login"
-                            component={Login}
-                        />
-                        <Stack.Screen
-                            options={{
-                                headerShown: false,
-                            }}
-                            name="BottomTabNavScreenGroup"
-                            component={BottomTabNavScreenGroup}
-                        />
-                    </Stack.Navigator>
-                )}
+                <Stack.Navigator initialRouteName="SplashScreen">
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="SplashScreen"
+                        component={SplashScreen}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="Login"
+                        component={Login}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="BottomTabNavScreenGroup"
+                        component={BottomTabNavScreenGroup}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="Signup"
+                        component={Signup}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="Resetpassword"
+                        component={Resetpassword}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="ConnectBLE"
+                        component={ConnectBLE}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="Heatmap"
+                        component={Heatmap}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="History"
+                        component={History}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="EditProfile"
+                        component={EditProfile}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerShown: false,
+                        }}
+                        name="Privacy"
+                        component={Privacy}
+                    />
+                </Stack.Navigator>
             </NavigationContainer>
         </TestProvider>
     );

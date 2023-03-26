@@ -1,119 +1,137 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import { Text, StyleSheet, View, SafeAreaView, Dimensions, Button, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Navigation } from 'react-native-navigation';
-import { DEFAULT_SERVICES, device, restoreServices } from 'react-native-bluetooth-serial-next';
-import { Device } from 'react-native-ble-plx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { RouteProp } from '@react-navigation/native';
 import { MyContext } from './TestProvider';
 
-const Home = ({ navigation, userId }) => {
-    const [error, setError] = useState(null);
-    const [accessToken, setAccessToken] = useState('');
-    const [user, setUser] = useState({
+interface User {
+    id: number;
+    username: string;
+    fullname: string;
+    email: string;
+    surname: string;
+    age: number;
+    gender: string;
+    weight: number;
+    high: number;
+}
+const Home = ({ route, navigation }) => {
+    const [error, setError] = useState<Error | null>(null);
+    const [accessToken, setAccessToken] = useState<string>('');
+    const [isLoading, setLoading] = useState<boolean>(true);
+    const [user, setUser] = useState<User>({
+        id: 0,
         username: '',
         email: '',
-        id: null,
-        name: '',
+        fullname: '',
         surname: '',
-        age: null,
+        age: 0,
         gender: '',
-        weight: null,
-        high: null,
-        step: null,
-        device: '',
-        status: ''
+        weight: 0,
+        high: 0,
     });
-    const [isLoading, setLoading] = useState(true);
-    interface User {
-        id: number;
-        name: string;
-        email: string;
-        surname: string;
-        age: number;
-        gender: string;
-        weight: number;
-        height: number;
-        step: number;
-        device: string;
-        status: string;
-    }
-    const fetchUser = async (id) => {
-        const indexToken = await AsyncStorage.getItem('@accessToken');
-        if (!userId) {
-            console.error('User ID is undefined');
-            return;
-        }
-        const response = await fetch(`http://10.64.59.12:3001/api/user/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${indexToken}`
-            },
-            body: JSON.stringify({ user: id })
-        })
-            .then(response => response.json())
-            .then((id) => {
-                console.log("Success: ", id.data);
-                setUser(id.data)
-            })
-        }
-    useEffect(() => {
-    const getUserData = async () => {
+    const fetchUser = async (userId: number, token: string) => {
         try {
-            const token = await AsyncStorage.getItem('@accessToken');
-            setAccessToken(token);
-            fetchUser(userId);
+            const  userId = 59;
+            const response = await fetch(`http://10.64.57.59:3001/users/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                
+            });
+            console.log(response);
+            if (!response.ok) {
+                throw new Error('Error fetching user data');
+            }
+            const { data } = await response.json(); // extract user data from the "data" property
+            setUser({
+                id: data.id,
+                username: data.username,
+                fullname: data.fullname,
+                email: data.email,
+                surname: data.surname,
+                age: data.age,
+                gender: data.gender,
+                weight: data.weight,
+                high: data.high,
+            });
         } catch (error) {
+            console.error('Error fetching user data:', error);
             setError(error);
-        } finally {
-            setLoading(false);
         }
     };
-    getUserData();
-}, [userId]);
+    useEffect(() => {
+        console.log(user);
+        AsyncStorage.getItem('accessToken')
+            .then((token) => {
+                if (token && user) { // only fetch user data if user is logged in
+                    setAccessToken(token);
+                    fetchUser(user.id, token);
+                }
+            })
+            .catch(setError)
+            .finally(() => setLoading(false));
+    }, [user.id]);
+
+    if (isLoading) {
+        return (
+            <View>
+                <ActivityIndicator />
+            </View>
+        );
+    }
+
+    if (error) {
+        return (
+            <View>
+                <Text>{error.message}</Text>
+            </View>
+        );
+    }
 
     const { data } = useContext(MyContext);
     const checkFoot = () => {
         if (
-            parseInt(data.ADC11) >= 12000 &&
-            parseInt(data.ADC12) >= 12000 &&
-            parseInt(data.ADC13) >= 12000 &&
-            parseInt(data.ADC14) >= 12000 &&
-            parseInt(data.ADC21) >= 12000 &&
-            parseInt(data.ADC22) >= 12000 &&
-            parseInt(data.ADC23) >= 12000 &&
-            parseInt(data.ADC24) >= 12000 &&
-            parseInt(data.ADC31) >= 12000 &&
-            parseInt(data.ADC32) >= 12000 &&
-            parseInt(data.ADC33) >= 12000 &&
-            parseInt(data.ADC34) >= 12000
+            parseInt(data.ADC11) >= 10000 &&
+            parseInt(data.ADC12) >= 10000 &&
+            parseInt(data.ADC13) >= 10000 &&
+            parseInt(data.ADC14) >= 10000 &&
+            parseInt(data.ADC21) >= 10000 &&
+            parseInt(data.ADC22) >= 10000 &&
+            parseInt(data.ADC23) >= 10000 &&
+            parseInt(data.ADC24) >= 10000 &&
+            parseInt(data.ADC31) >= 10000 &&
+            parseInt(data.ADC32) >= 10000 &&
+            parseInt(data.ADC33) >= 10000 &&
+            parseInt(data.ADC34) >= 10000
         ) {
             return 'Normal foot';
         } else if (
-            parseInt(data.ADC11) < 12000 ||
-            parseInt(data.ADC12) < 12000 ||
-            parseInt(data.ADC13) < 12000 ||
-            parseInt(data.ADC14) < 12000 ||
-            parseInt(data.ADC22) < 12000 ||
-            parseInt(data.ADC23) < 12000 ||
-            parseInt(data.ADC24) < 12000 ||
-            parseInt(data.ADC31) < 12000 ||
-            parseInt(data.ADC33) < 12000 ||
-            parseInt(data.ADC34) < 12000
+            parseInt(data.ADC11) < 10000 ||
+            parseInt(data.ADC12) < 10000 ||
+            parseInt(data.ADC13) < 10000 ||
+            parseInt(data.ADC14) < 10000 ||
+            parseInt(data.ADC22) < 10000 ||
+            parseInt(data.ADC23) < 10000 ||
+            parseInt(data.ADC24) < 10000 ||
+            parseInt(data.ADC31) < 10000 ||
+            parseInt(data.ADC33) < 10000 ||
+            parseInt(data.ADC34) < 10000
         ) {
             return 'FlatFoot';
         } else if (
-            parseInt(data.ADC11) >= 12000 &&
-            parseInt(data.ADC12) >= 12000 &&
-            parseInt(data.ADC13) >= 12000 &&
-            parseInt(data.ADC14) >= 12000 &&
-            parseInt(data.ADC22) >= 12000 &&
-            parseInt(data.ADC31) >= 12000 &&
-            parseInt(data.ADC32) >= 12000 &&
-            parseInt(data.ADC33) >= 12000 &&
-            parseInt(data.ADC34) >= 12000
+            parseInt(data.ADC11) >= 10000 &&
+            parseInt(data.ADC12) >= 10000 &&
+            parseInt(data.ADC13) >= 10000 &&
+            parseInt(data.ADC14) >= 10000 &&
+            parseInt(data.ADC22) >= 10000 &&
+            parseInt(data.ADC31) >= 10000 &&
+            parseInt(data.ADC32) >= 10000 &&
+            parseInt(data.ADC33) >= 10000 &&
+            parseInt(data.ADC34) >= 10000
         ) {
             return 'High arch';
         } else {
@@ -133,21 +151,17 @@ const Home = ({ navigation, userId }) => {
                 </Text>
             </View>
             <View style={styles.box}>
-                {user ? (
-                    <View style={styles.box}>
-                        <View style={{ marginLeft: 30 }}>
-                            <Text style={{ marginBottom: 10,  }}>{"คุณ"} {user.username} {user.surname}</Text>
-                            <Text style={{ marginBottom: 10,  }}>{'อายุ'} {user.age} {'ปี'}</Text>
-                            <Text style={{ marginBottom: 10,  }}>{'น้ำหนัก '}{user.weight} {'กิโลกรัม'}</Text>
-                            <Text style={{ marginBottom: 10,  }}>{'ส่วนสูง'} {user.high} {'เซนติเมตร'}</Text>
-                            <Text style={{ marginBottom: 10,  }}>{'อุปกรณ์:'} </Text>
-                            <Text style={{ marginBottom: 10,  }}>{'สถานะอุปกรณ์:'} </Text>
-                            <Text style={{ marginBottom: 10,  }}>{'Foot Type:'} {checkFoot()}</Text>
-                        </View>
+                <View style={styles.box}>
+                    <View style={{ marginLeft: 30 }}>
+                        <Text style={{ marginBottom: 10, }}>{"คุณ"} {user.fullname} {user.surname}</Text>
+                        <Text style={{ marginBottom: 10, }}>{'อายุ'} {user.age} {'ปี'}</Text>
+                        <Text style={{ marginBottom: 10, }}>{'น้ำหนัก '}{user.weight} {'กิโลกรัม'}</Text>
+                        <Text style={{ marginBottom: 10, }}>{'ส่วนสูง'} {user.high} {'เซนติเมตร'}</Text>
+                        <Text style={{ marginBottom: 10, }}>{'อุปกรณ์:'} </Text>
+                        <Text style={{ marginBottom: 10, }}>{'สถานะอุปกรณ์:'} </Text>
+                        <Text style={{ marginBottom: 10, }}>{'Foot Type:'} {checkFoot()}</Text>
                     </View>
-                ) : (
-                    <Text>Loading...</Text>
-                )}
+                </View>
             </View>
         </SafeAreaView>
     )
@@ -160,7 +174,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffff",
         //height: "100%",
         alignItems: 'center',
-        marginTop:-30,
+        marginTop: -30,
     },
     text: {
         fontSize: 20,
@@ -251,7 +265,3 @@ const styles = StyleSheet.create({
     },
 });
 export default Home;
-
-function setUser(data: any) {
-    throw new Error('Function not implemented.');
-}
