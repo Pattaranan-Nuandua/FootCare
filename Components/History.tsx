@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet ,Image,Table,ScrollView} from 'react-native'
+import { Alert,Button, View, Text, StyleSheet ,Image,Table,ScrollView} from 'react-native'
 import DatePicker from 'react-native-date-picker'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment';
@@ -14,6 +14,82 @@ const History = () => {
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
     const [data, setData] = useState([])
+
+    const CheckFoot = () => {
+        if (
+            parseInt(data.ADC11) >= 10000 &&
+            parseInt(data.ADC12) >= 10000 &&
+            parseInt(data.ADC13) >= 10000 &&
+            parseInt(data.ADC14) >= 10000 &&
+            parseInt(data.ADC21) >= 10000 &&
+            parseInt(data.ADC22) >= 10000 &&
+            parseInt(data.ADC23) >= 10000 &&
+            parseInt(data.ADC24) >= 10000 &&
+            parseInt(data.ADC31) >= 10000 &&
+            parseInt(data.ADC32) >= 10000 &&
+            parseInt(data.ADC33) >= 10000 &&
+            parseInt(data.ADC34) >= 10000
+        ) {
+            return 'เท้าแบน';
+        } else if (
+            parseInt(data.ADC11) >= 10000 &&
+            parseInt(data.ADC12) >= 10000 &&
+            parseInt(data.ADC13) >= 10000 &&
+            parseInt(data.ADC14) >= 10000 &&
+            parseInt(data.ADC22) >= 10000 &&
+            parseInt(data.ADC23) >= 10000 &&
+            parseInt(data.ADC24) >= 10000 &&
+            parseInt(data.ADC31) >= 10000 &&
+            parseInt(data.ADC33) >= 10000 &&
+            parseInt(data.ADC34) >= 10000
+        ) {
+            return 'เท้าปกติ';
+        } else if (
+            parseInt(data.ADC11) >= 10000 &&
+            parseInt(data.ADC12) >= 10000 &&
+            parseInt(data.ADC13) >= 10000 &&
+            parseInt(data.ADC14) >= 10000 &&
+            parseInt(data.ADC22) >= 10000 &&
+            parseInt(data.ADC31) >= 10000 &&
+            parseInt(data.ADC32) >= 10000 &&
+            parseInt(data.ADC33) >= 10000 &&
+            parseInt(data.ADC34) >= 10000
+        ) {
+            return 'อุ้งเท้าสูง';
+        } else if (
+            parseInt(data.ADC11) <= 0 &&
+            parseInt(data.ADC12) <= 0 &&
+            parseInt(data.ADC13) <= 0 &&
+            parseInt(data.ADC14) <= 0 &&
+            parseInt(data.ADC21) <= 0 &&
+            parseInt(data.ADC22) <= 0 &&
+            parseInt(data.ADC23) <= 0 &&
+            parseInt(data.ADC24) <= 0 &&
+            parseInt(data.ADC31) <= 0 &&
+            parseInt(data.ADC32) <= 0 &&
+            parseInt(data.ADC33) <= 0 &&
+            parseInt(data.ADC34) <= 0
+            ){
+            return 'ไม่มีการลงน้ำหนักเท้า';
+        } else {
+            return 'ไม่มีการลงน้ำหนักเท้า';
+        }
+    };
+
+    const Detected=()=>{
+        setTimeout(() => {
+            CheckFoot();
+        },1000);
+    }
+
+    const TestNow=()=>{
+        setTimeout(() => {
+            Alert.alert("Check");
+        },1000);
+        clearTimeout()
+    }
+
+    
 
     ///testheatmap
     //const xLabels=['ADC11','ADC12','ADC13','ADC14','ADC21','ADC22','ADC23','ADC24','ADC31','ADC32','ADC33','ADC34']
@@ -116,6 +192,8 @@ const History = () => {
                 onCancel={() => { setOpen(false) }}
             />
             
+            {TestNow()}
+
             {data.map((data, index) => {
                 
                 return (

@@ -53,20 +53,20 @@ const Insole = ({ navigation }) => {
             parseInt(data.ADC33) >= 10000 &&
             parseInt(data.ADC34) >= 10000
         ) {
-            return 'เท้าปกติ';
-        } else if (
-            parseInt(data.ADC11) < 10000 ||
-            parseInt(data.ADC12) < 10000 ||
-            parseInt(data.ADC13) < 10000 ||
-            parseInt(data.ADC14) < 10000 ||
-            parseInt(data.ADC22) < 10000 ||
-            parseInt(data.ADC23) < 10000 ||
-            parseInt(data.ADC24) < 10000 ||
-            parseInt(data.ADC31) < 10000 ||
-            parseInt(data.ADC33) < 10000 ||
-            parseInt(data.ADC34) < 10000
-        ) {
             return 'เท้าแบน';
+        } else if (
+            parseInt(data.ADC11) >= 10000 &&
+            parseInt(data.ADC12) >= 10000 &&
+            parseInt(data.ADC13) >= 10000 &&
+            parseInt(data.ADC14) >= 10000 &&
+            parseInt(data.ADC22) >= 10000 &&
+            parseInt(data.ADC23) >= 10000 &&
+            parseInt(data.ADC24) >= 10000 &&
+            parseInt(data.ADC31) >= 10000 &&
+            parseInt(data.ADC33) >= 10000 &&
+            parseInt(data.ADC34) >= 10000
+        ) {
+            return 'เท้าปกติ';
         } else if (
             parseInt(data.ADC11) >= 10000 &&
             parseInt(data.ADC12) >= 10000 &&
@@ -79,6 +79,21 @@ const Insole = ({ navigation }) => {
             parseInt(data.ADC34) >= 10000
         ) {
             return 'อุ้งเท้าสูง';
+        } else if (
+            parseInt(data.ADC11) <= 0 &&
+            parseInt(data.ADC12) <= 0 &&
+            parseInt(data.ADC13) <= 0 &&
+            parseInt(data.ADC14) <= 0 &&
+            parseInt(data.ADC21) <= 0 &&
+            parseInt(data.ADC22) <= 0 &&
+            parseInt(data.ADC23) <= 0 &&
+            parseInt(data.ADC24) <= 0 &&
+            parseInt(data.ADC31) <= 0 &&
+            parseInt(data.ADC32) <= 0 &&
+            parseInt(data.ADC33) <= 0 &&
+            parseInt(data.ADC34) <= 0
+            ){
+            return 'ไม่มีการลงน้ำหนักเท้า';
         } else {
             return 'ไม่มีการลงน้ำหนักเท้า';
         }
