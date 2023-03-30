@@ -10,6 +10,7 @@ const logo = Image.resolveAssetSource(Subject).uri;
 const Insole = ({ navigation }) => {
     /////================can use=========================
     const { data, setData } = useContext(MyContext);
+    const { data3 } = useContext(MyContext);
 
     //===use
     const getColors = (value) => {
@@ -36,35 +37,419 @@ const Insole = ({ navigation }) => {
         const index = await response.json()
         console.log(index);
     }
+    //detected การเดิน ยืน นั่ง
+    let walk=0;
+    const Detected=()=>{
+  if(data3.length === 3){
+    if(parseInt(data3[0].ADC33) >= 12000 && parseInt(data3[0].ADC31) >= 12000 && parseInt(data3[0].ADC34) >= 10000 ){
 
+        if(
+          parseInt(data3[1].ADC11) >= 10000 &&
+          parseInt(data3[1].ADC12) >= 10000 &&
+          parseInt(data3[1].ADC13) >= 10000 &&
+          parseInt(data3[1].ADC14) >= 10000 &&
+          parseInt(data3[1].ADC21) >= 10000 &&
+          parseInt(data3[1].ADC22) >= 10000 &&
+          parseInt(data3[1].ADC23) >= 10000 &&
+          parseInt(data3[1].ADC24) >= 10000 &&
+          parseInt(data3[1].ADC31) >= 10000 &&
+          parseInt(data3[1].ADC32) >= 10000 &&
+          parseInt(data3[1].ADC33) >= 10000 &&
+          parseInt(data3[1].ADC34) >= 10000)
+          {
+            return walk+=1;
+          }
+        else if(
+          parseInt(data3[1].ADC11) >= 10000 &&
+          parseInt(data3[1].ADC12) >= 10000 &&
+          parseInt(data3[1].ADC13) >= 10000 &&
+          parseInt(data3[1].ADC14) >= 10000 &&
+          parseInt(data3[1].ADC22) >= 10000 &&
+          parseInt(data3[1].ADC23) >= 10000 &&
+          parseInt(data3[1].ADC24) >= 10000 &&
+          parseInt(data3[1].ADC31) >= 10000 &&
+          parseInt(data3[1].ADC33) >= 10000 &&
+          parseInt(data3[1].ADC34) >= 10000
+        ){
+          return walk+=1;
+        }
+        else if(
+          parseInt(data3[1].ADC11) >= 10000 &&
+          parseInt(data3[1].ADC12) >= 10000 &&
+          parseInt(data3[1].ADC13) >= 10000 &&
+          parseInt(data3[1].ADC14) >= 10000 &&
+          parseInt(data3[1].ADC22) >= 10000 &&
+          parseInt(data3[1].ADC31) >= 10000 &&
+          parseInt(data3[1].ADC32) >= 10000 &&
+          parseInt(data3[1].ADC33) >= 10000 &&
+          parseInt(data3[1].ADC34) >= 10000
+        ){
+          return walk+=1;
+        }
+        else if(
+          parseInt(data3[2].ADC11) >= 10000 &&
+          parseInt(data3[2].ADC12) >= 10000 &&
+          parseInt(data3[2].ADC13) >= 12000 &&
+          parseInt(data3[2].ADC14) >= 10000 &&
+          parseInt(data3[2].ADC21) >= 12000 &&
+          parseInt(data3[2].ADC23) >= 10000 
+          
+        ){
+          return walk+=1;
+        }
+
+        if(walk >= 2){
+            return 'กำลังเดิน';
+        }
+    }
+    else if(
+        parseInt(data3[0].ADC11) >= 10000 &&  parseInt(data3[0].ADC11) <= 20000||
+        parseInt(data3[0].ADC12) >= 10000 &&  parseInt(data3[0].ADC12) <= 20000||
+        parseInt(data3[0].ADC13) >= 10000 &&  parseInt(data3[0].ADC13) <= 20000 ||
+        parseInt(data3[0].ADC14) >= 10000 &&  parseInt(data3[0].ADC14) <= 20000||
+        parseInt(data3[0].ADC21) >= 10000 &&  parseInt(data3[0].ADC21) <= 20000 ||
+        parseInt(data3[0].ADC22) >= 10000 &&  parseInt(data3[0].ADC22) <= 20000||
+        parseInt(data3[0].ADC23) >= 10000 &&  parseInt(data3[0].ADC23) <= 20000||
+        parseInt(data3[0].ADC24) >= 10000 &&  parseInt(data3[0].ADC24) <= 20000||
+        parseInt(data3[0].ADC31) >= 10000 &&  parseInt(data3[0].ADC31) <= 20000||
+        parseInt(data3[0].ADC32) >= 10000 &&  parseInt(data3[0].ADC32) <= 20000||
+        parseInt(data3[0].ADC33) >= 10000 &&  parseInt(data3[0].ADC33) <= 20000||
+        parseInt(data3[0].ADC33) >= 10000 &&  parseInt(data3[0].ADC33) <= 20000||
+        parseInt(data3[0].ADC34) >= 10000 &&  parseInt(data3[0].ADC34) <= 20000||
+        parseInt(data3[1].ADC11) >= 10000 &&  parseInt(data3[1].ADC11) <= 20000||
+        parseInt(data3[1].ADC12) >= 10000 &&  parseInt(data3[1].ADC12) <= 20000||
+        parseInt(data3[1].ADC13) >= 10000 &&  parseInt(data3[1].ADC13) <= 20000||
+        parseInt(data3[1].ADC14) >= 10000 &&  parseInt(data3[1].ADC14) <= 20000||
+        parseInt(data3[1].ADC21) >= 10000 &&  parseInt(data3[1].ADC21) <= 20000 ||
+        parseInt(data3[1].ADC22) >= 10000 &&  parseInt(data3[1].ADC22) <= 20000||
+        parseInt(data3[1].ADC23) >= 10000 &&  parseInt(data3[1].ADC23) <= 20000||
+        parseInt(data3[1].ADC24) >= 10000 &&  parseInt(data3[1].ADC24) <= 20000||
+        parseInt(data3[1].ADC31) >= 10000 &&  parseInt(data3[1].ADC31) <= 20000||
+        parseInt(data3[1].ADC32) >= 10000 &&  parseInt(data3[1].ADC32) <= 20000||
+        parseInt(data3[1].ADC33) >= 10000 &&  parseInt(data3[1].ADC33) <= 20000||
+        parseInt(data3[1].ADC34) >= 10000 &&  parseInt(data3[1].ADC34) <= 20000||
+        parseInt(data3[1].ADC11) >= 10000 &&  parseInt(data3[1].ADC11) <= 20000||
+        parseInt(data3[2].ADC12) >= 10000 &&  parseInt(data3[2].ADC12) <= 20000||
+        parseInt(data3[2].ADC13) >= 10000 &&  parseInt(data3[2].ADC13) <= 20000||
+        parseInt(data3[2].ADC14) >= 10000 &&  parseInt(data3[2].ADC14) <= 20000||
+        parseInt(data3[2].ADC21) >= 10000 &&  parseInt(data3[2].ADC21) <= 20000 ||
+        parseInt(data3[2].ADC22) >= 10000 && parseInt(data3[2].ADC22) <= 20000||
+        parseInt(data3[2].ADC23) >= 10000 &&  parseInt(data3[2].ADC23) <= 20000||
+        parseInt(data3[2].ADC24) >= 10000 &&  parseInt(data3[2].ADC24) <= 20000||
+        parseInt(data3[2].ADC31) >= 10000 && parseInt(data3[2].ADC31) <= 20000||
+        parseInt(data3[2].ADC32) >= 10000 && parseInt(data3[2].ADC32) <= 20000||
+        parseInt(data3[2].ADC33) >= 10000 && parseInt(data3[2].ADC33) <= 20000||
+        parseInt(data3[2].ADC34) >= 10000 && parseInt(data3[2].ADC34) <= 20000)
+      {
+        return 'กำลังยืน';
+      }
+
+      else if(
+        parseInt(data3[0].ADC11) >= 10000 &&  parseInt(data3[0].ADC11) <= 12000||
+        parseInt(data3[0].ADC12) >= 6000 &&  parseInt(data3[0].ADC12) <= 12000||
+        parseInt(data3[0].ADC13) >= 6000 &&  parseInt(data3[0].ADC13) <= 12000 ||
+        parseInt(data3[0].ADC14) >= 6000 &&  parseInt(data3[0].ADC14) <= 12000||
+        parseInt(data3[0].ADC21) >= 6000 &&  parseInt(data3[0].ADC21) <= 12000 ||
+        parseInt(data3[0].ADC22) >= 6000 &&  parseInt(data3[0].ADC22) <= 12000||
+        parseInt(data3[0].ADC23) >= 6000 &&  parseInt(data3[0].ADC23) <= 12000||
+        parseInt(data3[0].ADC24) >= 6000 &&  parseInt(data3[0].ADC24) <= 12000||
+        parseInt(data3[0].ADC31) >= 6000 &&  parseInt(data3[0].ADC31) <= 12000||
+        parseInt(data3[0].ADC32) >= 6000 &&  parseInt(data3[0].ADC32) <= 12000||
+        parseInt(data3[0].ADC33) >= 6000 &&  parseInt(data3[0].ADC33) <= 12000||
+        parseInt(data3[0].ADC33) >= 6000 &&  parseInt(data3[0].ADC33) <= 12000||
+        parseInt(data3[0].ADC34) >= 6000 &&  parseInt(data3[0].ADC34) <= 12000||
+        parseInt(data3[1].ADC11) >= 6000 &&  parseInt(data3[1].ADC11) <= 12000||
+        parseInt(data3[1].ADC12) >= 6000 &&  parseInt(data3[1].ADC12) <= 12000||
+        parseInt(data3[1].ADC13) >= 6000 &&  parseInt(data3[1].ADC13) <= 12000||
+        parseInt(data3[1].ADC14) >= 6000 &&  parseInt(data3[1].ADC14) <= 12000||
+        parseInt(data3[1].ADC21) >= 6000 &&  parseInt(data3[1].ADC21) <= 12000 ||
+        parseInt(data3[1].ADC22) >= 6000 &&  parseInt(data3[1].ADC22) <= 12000||
+        parseInt(data3[1].ADC23) >= 6000 &&  parseInt(data3[1].ADC23) <= 12000||
+        parseInt(data3[1].ADC24) >= 6000 &&  parseInt(data3[1].ADC24) <= 12000||
+        parseInt(data3[1].ADC31) >= 6000 &&  parseInt(data3[1].ADC31) <= 12000||
+        parseInt(data3[1].ADC32) >= 6000 &&  parseInt(data3[1].ADC32) <= 12000||
+        parseInt(data3[1].ADC33) >= 6000 &&  parseInt(data3[1].ADC33) <= 12000||
+        parseInt(data3[1].ADC34) >= 6000 &&  parseInt(data3[1].ADC34) <= 12000||
+        parseInt(data3[1].ADC11) >= 6000 &&  parseInt(data3[1].ADC11) <= 12000||
+        parseInt(data3[2].ADC12) >= 6000 &&  parseInt(data3[2].ADC12) <= 12000||
+        parseInt(data3[2].ADC13) >= 6000 &&  parseInt(data3[2].ADC13) <= 12000||
+        parseInt(data3[2].ADC14) >= 6000 &&  parseInt(data3[2].ADC14) <= 12000||
+        parseInt(data3[2].ADC21) >= 6000 &&  parseInt(data3[2].ADC21) <= 12000 ||
+        parseInt(data3[2].ADC22) >= 6000 && parseInt(data3[2].ADC22) <= 12000||
+        parseInt(data3[2].ADC23) >= 6000 &&  parseInt(data3[2].ADC23) <= 12000||
+        parseInt(data3[2].ADC24) >= 6000 &&  parseInt(data3[2].ADC24) <= 12000||
+        parseInt(data3[2].ADC31) >= 6000 && parseInt(data3[2].ADC31) <= 12000||
+        parseInt(data3[2].ADC32) >= 6000 && parseInt(data3[2].ADC32) <= 12000||
+        parseInt(data3[2].ADC33) >= 6000 && parseInt(data3[2].ADC33) <= 12000||
+        parseInt(data3[2].ADC34) >= 6000 && parseInt(data3[2].ADC34) <= 12000
+      )
+  {
+    return 'กำลังนั่ง';
+  }
+//   else if(
+//     parseInt(data3[0].ADC11) >= 10000 &&
+//     parseInt(data3[0].ADC12) >= 10000 &&
+//     parseInt(data3[0].ADC13) >= 10000 &&
+//     parseInt(data3[0].ADC14) >= 10000 &&
+//     parseInt(data3[0].ADC22) >= 10000 &&
+//     parseInt(data3[0].ADC23) >= 10000 &&
+//     parseInt(data3[0].ADC24) >= 10000 &&
+//     parseInt(data3[0].ADC31) >= 10000 &&
+//     parseInt(data3[0].ADC33) >= 10000 &&
+//     parseInt(data3[0].ADC34) >= 10000 &&
+//     parseInt(data3[1].ADC11) >= 10000 &&
+//     parseInt(data3[1].ADC12) >= 10000 &&
+//     parseInt(data3[1].ADC13) >= 10000 &&
+//     parseInt(data3[1].ADC14) >= 10000 &&
+//     parseInt(data3[1].ADC22) >= 10000 &&
+//     parseInt(data3[1].ADC23) >= 10000 &&
+//     parseInt(data3[1].ADC24) >= 10000 &&
+//     parseInt(data3[1].ADC31) >= 10000 &&
+//     parseInt(data3[1].ADC33) >= 10000 &&
+//     parseInt(data3[1].ADC34) >= 10000 &&
+//     parseInt(data3[2].ADC11) >= 10000 &&
+//     parseInt(data3[2].ADC12) >= 10000 &&
+//     parseInt(data3[2].ADC13) >= 10000 &&
+//     parseInt(data3[2].ADC14) >= 10000 &&
+//     parseInt(data3[2].ADC22) >= 10000 &&
+//     parseInt(data3[2].ADC23) >= 10000 &&
+//     parseInt(data3[2].ADC24) >= 10000 &&
+//     parseInt(data3[2].ADC31) >= 10000 &&
+//     parseInt(data3[2].ADC33) >= 10000 &&
+//     parseInt(data3[2].ADC34) >= 10000 
+//   ){
+//      return 'กำลังยืน';
+//    }else if(
+//     parseInt(data3[0].ADC11) >= 10000 &&
+//     parseInt(data3[0].ADC12) >= 10000 &&
+//     parseInt(data3[0].ADC13) >= 10000 &&
+//     parseInt(data3[0].ADC14) >= 10000 &&
+//     parseInt(data3[0].ADC22) >= 10000 &&
+//     parseInt(data3[0].ADC31) >= 10000 &&
+//     parseInt(data3[0].ADC32) >= 10000 &&
+//     parseInt(data3[0].ADC33) >= 10000 &&
+//     parseInt(data3[0].ADC34) >= 10000 &&
+//     parseInt(data3[1].ADC11) >= 10000 &&
+//     parseInt(data3[1].ADC12) >= 10000 &&
+//     parseInt(data3[1].ADC13) >= 10000 &&
+//     parseInt(data3[1].ADC14) >= 10000 &&
+//     parseInt(data3[1].ADC22) >= 10000 &&
+//     parseInt(data3[1].ADC31) >= 10000 &&
+//     parseInt(data3[1].ADC32) >= 10000 &&
+//     parseInt(data3[1].ADC33) >= 10000 &&
+//     parseInt(data3[1].ADC34) >= 10000 &&
+//     parseInt(data3[1].ADC11) >= 10000 &&
+//     parseInt(data3[2].ADC12) >= 10000 &&
+//     parseInt(data3[2].ADC13) >= 10000 &&
+//     parseInt(data3[2].ADC14) >= 10000 &&
+//     parseInt(data3[2].ADC22) >= 10000 &&
+//     parseInt(data3[2].ADC31) >= 10000 &&
+//     parseInt(data3[2].ADC32) >= 10000 &&
+//     parseInt(data3[2].ADC33) >= 10000 &&
+//     parseInt(data3[2].ADC34) >= 10000
+//     ){
+// return 'กำลังยืน';
+//} 
+// else if(
+//     parseInt(data3[0].ADC11) >= 10000 &&  parseInt(data3[0].ADC11) <= 20000||
+//     parseInt(data3[0].ADC12) >= 10000 &&  parseInt(data3[0].ADC12) <= 20000||
+//     parseInt(data3[0].ADC13) >= 10000 &&  parseInt(data3[0].ADC13) <= 20000 ||
+//     parseInt(data3[0].ADC14) >= 10000 &&  parseInt(data3[0].ADC14) <= 20000||
+//     parseInt(data3[0].ADC21) >= 10000 &&  parseInt(data3[0].ADC21) <= 20000 ||
+//     parseInt(data3[0].ADC22) >= 10000 &&  parseInt(data3[0].ADC22) <= 20000||
+//     parseInt(data3[0].ADC23) >= 10000 &&  parseInt(data3[0].ADC23) <= 20000||
+//     parseInt(data3[0].ADC24) >= 10000 &&  parseInt(data3[0].ADC24) <= 20000||
+//     parseInt(data3[0].ADC31) >= 10000 &&  parseInt(data3[0].ADC31) <= 20000||
+//     parseInt(data3[0].ADC32) >= 10000 &&  parseInt(data3[0].ADC32) <= 20000||
+//     parseInt(data3[0].ADC33) >= 10000 &&  parseInt(data3[0].ADC33) <= 20000||
+//     parseInt(data3[0].ADC33) >= 10000 &&  parseInt(data3[0].ADC33) <= 20000||
+//     parseInt(data3[0].ADC34) >= 10000 &&  parseInt(data3[0].ADC34) <= 20000||
+//     parseInt(data3[1].ADC11) >= 10000 &&  parseInt(data3[1].ADC11) <= 20000||
+//     parseInt(data3[1].ADC12) >= 10000 &&  parseInt(data3[1].ADC12) <= 20000||
+//     parseInt(data3[1].ADC13) >= 10000 &&  parseInt(data3[1].ADC13) <= 20000||
+//     parseInt(data3[1].ADC14) >= 10000 &&  parseInt(data3[1].ADC14) <= 20000||
+//     parseInt(data3[1].ADC21) >= 10000 &&  parseInt(data3[1].ADC21) <= 20000 ||
+//     parseInt(data3[1].ADC22) >= 10000 &&  parseInt(data3[1].ADC22) <= 20000||
+//     parseInt(data3[1].ADC23) >= 10000 &&  parseInt(data3[1].ADC23) <= 20000||
+//     parseInt(data3[1].ADC24) >= 10000 &&  parseInt(data3[1].ADC24) <= 20000||
+//     parseInt(data3[1].ADC31) >= 10000 &&  parseInt(data3[1].ADC31) <= 20000||
+//     parseInt(data3[1].ADC32) >= 10000 &&  parseInt(data3[1].ADC32) <= 20000||
+//     parseInt(data3[1].ADC33) >= 10000 &&  parseInt(data3[1].ADC33) <= 20000||
+//     parseInt(data3[1].ADC34) >= 10000 &&  parseInt(data3[1].ADC34) <= 20000||
+//     parseInt(data3[1].ADC11) >= 10000 &&  parseInt(data3[1].ADC11) <= 20000||
+//     parseInt(data3[2].ADC12) >= 10000 &&  parseInt(data3[2].ADC12) <= 20000||
+//     parseInt(data3[2].ADC13) >= 10000 &&  parseInt(data3[2].ADC13) <= 20000||
+//     parseInt(data3[2].ADC14) >= 10000 &&  parseInt(data3[2].ADC14) <= 20000||
+//     parseInt(data3[2].ADC21) >= 10000 &&  parseInt(data3[2].ADC21) <= 20000 ||
+//     parseInt(data3[2].ADC22) >= 10000 && parseInt(data3[2].ADC22) <= 20000||
+//     parseInt(data3[2].ADC23) >= 10000 &&  parseInt(data3[2].ADC23) <= 20000||
+//     parseInt(data3[2].ADC24) >= 10000 &&  parseInt(data3[2].ADC24) <= 20000||
+//     parseInt(data3[2].ADC31) >= 10000 && parseInt(data3[2].ADC31) <= 20000||
+//     parseInt(data3[2].ADC32) >= 10000 && parseInt(data3[2].ADC32) <= 20000||
+//     parseInt(data3[2].ADC33) >= 10000 && parseInt(data3[2].ADC33) <= 20000||
+//     parseInt(data3[2].ADC34) >= 10000 && parseInt(data3[2].ADC34) <= 20000)
+//   {
+//     return 'กำลังยืน';
+//   }
+//   }else if(
+//     parseInt(data3[0].ADC11) <= 10000 ||
+//     parseInt(data3[0].ADC12) <= 10000 ||
+//     parseInt(data3[0].ADC13) <= 10000 ||
+//     parseInt(data3[0].ADC14) <= 10000 ||
+//     parseInt(data3[0].ADC22) <= 10000 ||
+//     parseInt(data3[0].ADC23) <= 10000 ||
+//     parseInt(data3[0].ADC24) <= 10000 ||
+//      parseInt(data3[0].ADC31) <= 10000 ||
+//      parseInt(data3[0].ADC33) <= 10000 ||
+//      parseInt(data3[0].ADC34) <= 10000 ||
+//      parseInt(data3[1].ADC11) <= 10000 ||
+//      parseInt(data3[1].ADC12) <= 10000 ||
+//      parseInt(data3[1].ADC13) <= 10000 ||
+//      parseInt(data3[1].ADC14) <= 10000 ||
+//      parseInt(data3[1].ADC22) <= 10000 ||
+//      parseInt(data3[1].ADC23) <= 10000 ||
+//      parseInt(data3[1].ADC24) <= 10000 ||
+//      parseInt(data3[1].ADC31) <= 10000 ||
+//      parseInt(data3[1].ADC33) <= 10000 ||
+//      parseInt(data3[1].ADC34) <= 10000 ||
+//      parseInt(data3[2].ADC11) <= 10000 ||
+//      parseInt(data3[2].ADC12) <= 10000 ||
+//      parseInt(data3[2].ADC13) <= 10000 ||
+//      parseInt(data3[2].ADC14) <= 10000 ||
+//      parseInt(data3[2].ADC22) <= 10000 ||
+//      parseInt(data3[2].ADC23) <= 10000 ||
+//      parseInt(data3[2].ADC24) <= 10000 ||
+//      parseInt(data3[2].ADC31) <= 10000 ||
+//      parseInt(data3[2].ADC33) <= 10000 ||
+//      parseInt(data3[2].ADC34) <= 10000 
+//    ){
+//       return 'กำลังนั่ง';
+//     }else if(
+//       parseInt(data3[0].ADC11) >= 6000 &&  parseInt(data3[0].ADC11) <= 12000||
+//       parseInt(data3[0].ADC12) >= 6000 &&  parseInt(data3[0].ADC12) <= 12000||
+//       parseInt(data3[0].ADC13) >= 6000 &&  parseInt(data3[0].ADC13) <= 12000 ||
+//       parseInt(data3[0].ADC14) >= 6000 &&  parseInt(data3[0].ADC14) <= 12000||
+//       parseInt(data3[0].ADC22) >= 6000 &&  parseInt(data3[0].ADC22) <= 12000||
+//       parseInt(data3[0].ADC31) >= 6000 &&  parseInt(data3[0].ADC31) <= 12000||
+//       parseInt(data3[0].ADC32) >= 6000 &&  parseInt(data3[0].ADC32) <= 12000||
+//       parseInt(data3[0].ADC33) >= 6000 &&  parseInt(data3[0].ADC33) <= 12000||
+//       parseInt(data3[0].ADC33) >= 6000 &&  parseInt(data3[0].ADC33) <= 12000||
+//       parseInt(data3[0].ADC34) >= 6000 &&  parseInt(data3[0].ADC34) <= 12000||
+//       parseInt(data3[1].ADC11) >= 6000 &&  parseInt(data3[1].ADC11) <= 12000||
+//       parseInt(data3[1].ADC12) >= 6000 &&  parseInt(data3[1].ADC12) <= 12000||
+//       parseInt(data3[1].ADC13) >= 6000 &&  parseInt(data3[1].ADC13) <= 12000||
+//       parseInt(data3[1].ADC14) >= 6000 &&  parseInt(data3[1].ADC14) <= 12000||
+//       parseInt(data3[1].ADC22) >= 6000 &&  parseInt(data3[1].ADC22) <= 12000||
+//       parseInt(data3[1].ADC31) >= 6000 &&  parseInt(data3[1].ADC31) <= 12000||
+//       parseInt(data3[1].ADC32) >= 6000 &&  parseInt(data3[1].ADC32) <= 12000||
+//       parseInt(data3[1].ADC33) >= 6000 &&  parseInt(data3[1].ADC33) <= 12000||
+//       parseInt(data3[1].ADC34) >= 6000 &&  parseInt(data3[1].ADC34) <= 12000||
+//       parseInt(data3[1].ADC11) >= 6000 &&  parseInt(data3[1].ADC11) <= 12000||
+//       parseInt(data3[2].ADC12) >= 6000 &&  parseInt(data3[2].ADC12) <= 12000||
+//       parseInt(data3[2].ADC13) >= 6000 &&  parseInt(data3[2].ADC13) <= 12000||
+//       parseInt(data3[2].ADC14) >= 6000 &&  parseInt(data3[2].ADC14) <= 12000||
+//       parseInt(data3[2].ADC22) >= 6000 && parseInt(data3[2].ADC22) <= 12000||
+//       parseInt(data3[2].ADC31) >= 6000 && parseInt(data3[2].ADC31) <= 12000||
+//       parseInt(data3[2].ADC32) >= 6000 && parseInt(data3[2].ADC32) <= 12000||
+//       parseInt(data3[2].ADC33) >= 6000 && parseInt(data3[2].ADC33) <= 12000||
+//       parseInt(data3[2].ADC34) >= 6000 && parseInt(data3[2].ADC34) <= 12000
+//       )
+//         return 'กำลังนั่ง';
+    //   } else if (
+    //     parseInt(data.ADC11) <= 0 &&
+    //     parseInt(data.ADC12) <= 0 &&
+    //     parseInt(data.ADC13) <= 0 &&
+    //     parseInt(data.ADC14) <= 0 &&
+    //     parseInt(data.ADC21) <= 0 &&
+    //     parseInt(data.ADC22) <= 0 &&
+    //     parseInt(data.ADC23) <= 0 &&
+    //     parseInt(data.ADC24) <= 0 &&
+    //     parseInt(data.ADC31) <= 0 &&
+    //     parseInt(data.ADC32) <= 0 &&
+    //     parseInt(data.ADC33) <= 0 &&
+    //     parseInt(data.ADC34) <= 0
+    //     ){
+    //     return 'ไม่มีการลงน้ำหนักเท้า';
+    // } 
+        else if(
+        parseInt(data3[0].ADC11) <= 10 &&
+        parseInt(data3[0].ADC12) <= 10 &&
+        parseInt(data3[0].ADC13) <= 10 &&
+        parseInt(data3[0].ADC14) <= 10 &&
+        parseInt(data3[0].ADC21) <= 10 &&
+        parseInt(data3[0].ADC22) <= 10 &&
+        parseInt(data3[0].ADC23) <= 10 &&
+        parseInt(data3[0].ADC24) <= 10 &&
+        parseInt(data3[0].ADC31) <= 10 &&
+        parseInt(data3[0].ADC32) <= 10 &&
+        parseInt(data3[0].ADC33) <= 10 &&
+        parseInt(data3[0].ADC34) <= 10 &&
+        parseInt(data3[1].ADC11) <= 10 &&
+        parseInt(data3[1].ADC12) <= 10 &&
+        parseInt(data3[1].ADC13) <= 10 &&
+        parseInt(data3[1].ADC14) <= 10 &&
+        parseInt(data3[1].ADC21) <= 10 &&
+        parseInt(data3[1].ADC22) <= 10 &&
+        parseInt(data3[1].ADC23) <= 10 &&
+        parseInt(data3[1].ADC24) <= 10 &&
+        parseInt(data3[1].ADC31) <= 10 &&
+        parseInt(data3[1].ADC32) <= 10 &&
+        parseInt(data3[1].ADC33) <= 10 &&
+        parseInt(data3[1].ADC34) <= 10 &&
+        parseInt(data3[2].ADC11) <= 10 &&
+        parseInt(data3[2].ADC12) <= 10 &&
+        parseInt(data3[2].ADC13) <= 10 &&
+        parseInt(data3[2].ADC14) <= 10 &&
+        parseInt(data3[2].ADC21) <= 10 &&
+        parseInt(data3[2].ADC22) <= 10 &&
+        parseInt(data3[2].ADC23) <= 10 &&
+        parseInt(data3[2].ADC24) <= 10 &&
+        parseInt(data3[2].ADC31) <= 10 &&
+        parseInt(data3[2].ADC32) <= 10 &&
+        parseInt(data3[2].ADC33) <= 10 &&
+        parseInt(data3[2].ADC34) <= 10
+    ){
+        return 'ไม่มีการเคลื่อนไหว';
+    }
+      else{
+        return 'ไม่มีข้อมูล';
+      }
+}
+}
+
+
+// }
+    
     //const { data } = useContext(MyContext);
+    
     const checkFoot = () => {
         if (
-            parseInt(data.ADC11) >= 10000 &&
-            parseInt(data.ADC12) >= 10000 &&
-            parseInt(data.ADC13) >= 10000 &&
-            parseInt(data.ADC14) >= 10000 &&
-            parseInt(data.ADC21) >= 10000 &&
-            parseInt(data.ADC22) >= 10000 &&
-            parseInt(data.ADC23) >= 10000 &&
-            parseInt(data.ADC24) >= 10000 &&
-            parseInt(data.ADC31) >= 10000 &&
-            parseInt(data.ADC32) >= 10000 &&
-            parseInt(data.ADC33) >= 10000 &&
-            parseInt(data.ADC34) >= 10000
+            parseInt(data.ADC11) >= 6000 &&
+            parseInt(data.ADC12) >= 6000 &&
+            parseInt(data.ADC13) >= 6000 &&
+            parseInt(data.ADC14) >= 6000 &&
+            parseInt(data.ADC21) >= 6000 &&
+            parseInt(data.ADC22) >= 6000 &&
+            parseInt(data.ADC23) >= 6000 &&
+            parseInt(data.ADC24) >= 6000 &&
+            parseInt(data.ADC31) >= 6000 &&
+            parseInt(data.ADC32) >= 6000 &&
+            parseInt(data.ADC33) >= 6000 &&
+            parseInt(data.ADC34) >= 6000
         ) {
             return 'เท้าแบน';
         } else if (
-            parseInt(data.ADC11) >= 10000 &&
-            parseInt(data.ADC12) >= 10000 &&
-            parseInt(data.ADC13) >= 10000 &&
-            parseInt(data.ADC14) >= 10000 &&
-            parseInt(data.ADC22) >= 10000 &&
-            parseInt(data.ADC23) >= 10000 &&
-            parseInt(data.ADC24) >= 10000 &&
-            parseInt(data.ADC31) >= 10000 &&
-            parseInt(data.ADC33) >= 10000 &&
-            parseInt(data.ADC34) >= 10000
+            //parseInt(data.ADC21) <= 1000 &&
+            parseInt(data.ADC11) <= 10000 && parseInt(data.ADC11) >= 3000 ||
+            parseInt(data.ADC12) <= 10000 && parseInt(data.ADC12) >= 3000 ||
+            parseInt(data.ADC13) <= 10000 && parseInt(data.ADC13) >= 3000 ||
+            parseInt(data.ADC14) <= 10000 && parseInt(data.ADC14) >= 3000 ||
+            parseInt(data.ADC22) <= 10000 && parseInt(data.ADC22) >= 3000 ||
+            parseInt(data.ADC23) <= 10000 && parseInt(data.ADC23) >= 3000 ||
+            parseInt(data.ADC24) <= 10000 && parseInt(data.ADC24) >= 3000 ||
+            parseInt(data.ADC31) <= 10000 && parseInt(data.ADC31) >= 3000 ||
+            parseInt(data.ADC33) <= 10000 && parseInt(data.ADC33) >= 3000 ||
+            parseInt(data.ADC34) <= 10000 && parseInt(data.ADC34) >= 3000
         ) {
             return 'เท้าปกติ';
         } else if (
@@ -108,27 +493,28 @@ const Insole = ({ navigation }) => {
                 <Text style={{ color: '#037A7E',fontSize:16 }}>ประวัติ</Text>
             </TouchableOpacity>
             <Text style={{ marginTop: 40, marginLeft: 30, fontWeight: '300' }} >ลักษณะการลงน้ำหนัก: {checkFoot()}</Text>
+            <Text style={{ marginTop: 40, marginLeft: 30, fontWeight: '300' }} >Now: {Detected()}</Text>
             <Image source={{ uri: logo }}
                 style={styles.image} />
             <View style={styles.dataContainer}>
                 <View style={styles.dataGroup}>
                     <View style={styles.dataGroup1}>
-                        <Text style={[styles.dataText1, { backgroundColor: getColors(data.ADC11) }]}></Text>
-                        <Text style={[styles.dataText2, { backgroundColor: getColors(data.ADC13) }]}></Text>
-                        <Text style={[styles.dataText3, { backgroundColor: getColors(data.ADC21) }]}></Text>
-                        <Text style={[styles.dataText4, { backgroundColor: getColors(data.ADC12) }]}></Text>
+                        <Text style={[styles.dataText1, { backgroundColor: getColors(data.ADC11) }]}>1</Text>
+                        <Text style={[styles.dataText2, { backgroundColor: getColors(data.ADC13) }]}>2</Text>
+                        <Text style={[styles.dataText3, { backgroundColor: getColors(data.ADC21) }]}>3</Text>
+                        <Text style={[styles.dataText4, { backgroundColor: getColors(data.ADC12) }]}>4</Text>
                     </View>
                     <View>
-                        <Text style={[styles.dataText5, { backgroundColor: getColors(data.ADC23) }]}></Text>
-                        <Text style={[styles.dataText6, { backgroundColor: getColors(data.ADC22) }]}></Text>
-                        <Text style={[styles.dataText7, { backgroundColor: getColors(data.ADC14) }]}></Text>
-                        <Text style={[styles.dataText8, { backgroundColor: getColors(data.ADC32) }]}></Text>
+                        <Text style={[styles.dataText5, { backgroundColor: getColors(data.ADC23) }]}>5</Text>
+                        <Text style={[styles.dataText6, { backgroundColor: getColors(data.ADC22) }]}>6</Text>
+                        <Text style={[styles.dataText7, { backgroundColor: getColors(data.ADC14) }]}>7</Text>
+                        <Text style={[styles.dataText8, { backgroundColor: getColors(data.ADC32) }]}>8</Text>
                     </View>
                     <View>
-                        <Text style={[styles.dataText9, { backgroundColor: getColors(data.ADC24) }]}></Text>
-                        <Text style={[styles.dataText10, { backgroundColor: getColors(data.ADC34) }]}></Text>
-                        <Text style={[styles.dataText11, { backgroundColor: getColors(data.ADC31) }]}></Text>
-                        <Text style={[styles.dataText12, { backgroundColor: getColors(data.ADC33) }]}></Text>
+                        <Text style={[styles.dataText9, { backgroundColor: getColors(data.ADC24) }]}>9</Text>
+                        <Text style={[styles.dataText10, { backgroundColor: getColors(data.ADC34) }]}>10</Text>
+                        <Text style={[styles.dataText11, { backgroundColor: getColors(data.ADC31) }]}>11</Text>
+                        <Text style={[styles.dataText12, { backgroundColor: getColors(data.ADC33) }]}>12</Text>
                     </View>
                 </View>
                 <BarChart />
@@ -299,6 +685,5 @@ const styles = StyleSheet.create({
     },
 
 });
-
 
 export default Insole;

@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
     });
 });
 //try
-app.get("/users/:id", (req, res) => {
+/*app.get("/users/:id", (req, res) => {
     const userId = req.params.id;
     const accessToken = req.headers.authorization;
     if (!accessToken) {
@@ -59,7 +59,7 @@ app.get("/users/:id", (req, res) => {
         console.error(err);
         return res.status(401).json({ error: "Invalid access token" });
     }
-});
+});*/
 
 
 app.post("/show/index", (req, res) => {
@@ -136,7 +136,7 @@ app.post("/add/index", (req, res) => {
         }
     })
 })
-app.post('/login', (req, res) => {
+/*app.post('/login', (req, res) => {
     const { username, password } = req.body;
     db.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (err, result) => {
         if (err) {
@@ -173,6 +173,75 @@ app.post('/login', (req, res) => {
             });
         });
     });
+});*/
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    db.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ status: 'error', message: 'An unexpected error occurred. Please try again later.' });
+            return;
+        }
+        if (result.length === 0) {
+            res.status(401).json({ status: 'error', message: 'Invalid username or password.' });
+            return;
+        }
+        const user = result[0];
+        const accessToken = jwt.sign({ userId: user.id }, 'your_secret_key');
+        getUserData(username, (err, userData) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ status: 'error', message: 'An unexpected error occurred. Please try again later.' });
+                return;
+            }
+            res.json({ status: 'ok', message: 'Successfully logged in.', accessToken, userId: user.id, userData });
+        });
+    });
+});
+
+function getUserData(username, callback) {
+    db.query('SELECT * FROM users WHERE username = ?', [username], (err, result) => {
+        if (err) {
+            callback(err);
+            return;
+        }
+        if (result.length === 0) {
+            callback(new Error('User not found.'));
+            return;
+        }
+        const userData = result[0];
+        callback(null, userData);
+    });
+}
+
+app.get("/users/:username", (req, res) => {
+    const { username } = req.params;
+    const accessToken = req.headers.authorization;
+    if (!accessToken) {
+        return res.status(401).json({ error: "Access token is missing" });
+    }
+    // Verify the access token
+    try {
+        const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+        // Fetch the user data
+        db.query("SELECT * FROM users WHERE username = ?", [username], (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: "Error fetching user" });
+            } else if (result.length == 0) {
+                res.status(404).json({ error: "User not found" });
+            } else {
+                const userData = result[0];
+                if (decoded.userId != userData.id) {
+                    return res.status(403).json({ error: "Access denied" });
+                }
+                res.json(userData);
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(401).json({ error: "Invalid access token" });
+    }
 });
 
 app.post("/add_data", (req, res) => {

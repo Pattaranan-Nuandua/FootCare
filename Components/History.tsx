@@ -14,95 +14,7 @@ const History = () => {
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
     const [data, setData] = useState([])
-
-    const CheckFoot = () => {
-        if (
-            parseInt(data.ADC11) >= 10000 &&
-            parseInt(data.ADC12) >= 10000 &&
-            parseInt(data.ADC13) >= 10000 &&
-            parseInt(data.ADC14) >= 10000 &&
-            parseInt(data.ADC21) >= 10000 &&
-            parseInt(data.ADC22) >= 10000 &&
-            parseInt(data.ADC23) >= 10000 &&
-            parseInt(data.ADC24) >= 10000 &&
-            parseInt(data.ADC31) >= 10000 &&
-            parseInt(data.ADC32) >= 10000 &&
-            parseInt(data.ADC33) >= 10000 &&
-            parseInt(data.ADC34) >= 10000
-        ) {
-            return 'เท้าแบน';
-        } else if (
-            parseInt(data.ADC11) >= 10000 &&
-            parseInt(data.ADC12) >= 10000 &&
-            parseInt(data.ADC13) >= 10000 &&
-            parseInt(data.ADC14) >= 10000 &&
-            parseInt(data.ADC22) >= 10000 &&
-            parseInt(data.ADC23) >= 10000 &&
-            parseInt(data.ADC24) >= 10000 &&
-            parseInt(data.ADC31) >= 10000 &&
-            parseInt(data.ADC33) >= 10000 &&
-            parseInt(data.ADC34) >= 10000
-        ) {
-            return 'เท้าปกติ';
-        } else if (
-            parseInt(data.ADC11) >= 10000 &&
-            parseInt(data.ADC12) >= 10000 &&
-            parseInt(data.ADC13) >= 10000 &&
-            parseInt(data.ADC14) >= 10000 &&
-            parseInt(data.ADC22) >= 10000 &&
-            parseInt(data.ADC31) >= 10000 &&
-            parseInt(data.ADC32) >= 10000 &&
-            parseInt(data.ADC33) >= 10000 &&
-            parseInt(data.ADC34) >= 10000
-        ) {
-            return 'อุ้งเท้าสูง';
-        } else if (
-            parseInt(data.ADC11) <= 0 &&
-            parseInt(data.ADC12) <= 0 &&
-            parseInt(data.ADC13) <= 0 &&
-            parseInt(data.ADC14) <= 0 &&
-            parseInt(data.ADC21) <= 0 &&
-            parseInt(data.ADC22) <= 0 &&
-            parseInt(data.ADC23) <= 0 &&
-            parseInt(data.ADC24) <= 0 &&
-            parseInt(data.ADC31) <= 0 &&
-            parseInt(data.ADC32) <= 0 &&
-            parseInt(data.ADC33) <= 0 &&
-            parseInt(data.ADC34) <= 0
-            ){
-            return 'ไม่มีการลงน้ำหนักเท้า';
-        } else {
-            return 'ไม่มีการลงน้ำหนักเท้า';
-        }
-    };
-
-    const Detected=()=>{
-        setTimeout(() => {
-            CheckFoot();
-        },1000);
-    }
-
-    const TestNow=()=>{
-        setTimeout(() => {
-            Alert.alert("Check");
-        },1000);
-        clearTimeout()
-    }
-
-    
-
-    ///testheatmap
-    //const xLabels=['ADC11','ADC12','ADC13','ADC14','ADC21','ADC22','ADC23','ADC24','ADC31','ADC32','ADC33','ADC34']
-    //const yLabels=['date1','date2','date3']
-    //const indextest = [[15,12,45,12,0,795,5264,1234,456,1572,14520,120],[155,852,1152,12,0,795,0,1234,4156,1572,14150,120],[1510,20422,450,152,15983,795,5264,1052,4156,1072,14520,1520]]
-    // const xLabels = new Array(24).fill(0).map((_, i) => `${i}`)
-    // const yLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
-    // const indextest = new Array(yLabels.length)
-    //     .fill(0)
-    //     .map(() =>
-    //         new Array(xLabels.length).fill(0).map(() => Math.floor(Math.random() * 50 + 50))
-    //     )
-    //const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+   
 
     const handleshow = async (dateindex, dateindex2) => {
         console.log("handleshow");
@@ -142,16 +54,68 @@ const History = () => {
         const endColor = colorRange[colorIndex + 1] || startColor;
         return colorRange[colorIndex];
     }
+    const Detected = () => {
+        if(data3.length === 3 ){
+            if (
+                    parseInt(data3[0].ADC34) >= 20000 &&
+                    parseInt(data3[0].ADC31) >= 18000 &&
+                    parseInt(data3[0].ADC24) >= 18000 
+                ){
+                return num+=1 ;
+                }
+            else if (
+                
+                    parseInt(data3[1].ADC11) >= 10000 &&
+                    parseInt(data3[1].ADC12) >= 10000 &&
+                    parseInt(data3[1].ADC13) >= 10000 &&
+                    parseInt(data3[1].ADC14) >= 10000 &&
+                    parseInt(data3[1].ADC21) >= 10000 &&
+                    parseInt(data3[1].ADC22) >= 10000 &&
+                    parseInt(data3[1].ADC23) >= 10000 &&
+                    parseInt(data3[1].ADC24) >= 10000 &&
+                    parseInt(data3[1].ADC31) >= 10000 &&
+                    parseInt(data3[1].ADC32) >= 10000 &&
+                    parseInt(data3[1].ADC33) >= 10000 &&
+                    parseInt(data3[1].ADC34) >= 10000
+                ) {
+                    return num+=1 ;
+                } 
+                else if (
+                    parseInt(data3[1].ADC11) >= 10000 &&
+                    parseInt(data3[1].ADC12) >= 10000 &&
+                    parseInt(data3[1].ADC13) >= 10000 &&
+                    parseInt(data3[1].ADC14) >= 10000 &&
+                    parseInt(data3[1].ADC22) >= 10000 &&
+                    parseInt(data3[1].ADC23) >= 10000 &&
+                    parseInt(data3[1].ADC24) >= 10000 &&
+                    parseInt(data3[1].ADC31) >= 10000 &&
+                    parseInt(data3[1].ADC33) >= 10000 &&
+                    parseInt(data3[1].ADC34) >= 10000
+                ) {
+                    return num+=1 ;;
+                } else if (
+                    parseInt(data3[1].ADC11) >= 10000 &&
+                    parseInt(data3[1].ADC12) >= 10000 &&
+                    parseInt(data3[1].ADC13) >= 10000 &&
+                    parseInt(data3[1].ADC14) >= 10000 &&
+                    parseInt(data3[1].ADC22) >= 10000 &&
+                    parseInt(data3[1].ADC31) >= 10000 &&
+                    parseInt(data3[1].ADC32) >= 10000 &&
+                    parseInt(data3[1].ADC33) >= 10000 &&
+                    parseInt(data3[1].ADC34) >= 10000
+                ) {
+                    return num+=1 ;;
+                }
+                else if(
+                    parseInt(data3[2].ADC34) >= 20000 &&
+                    parseInt(data3[2].ADC31) >= 18000 &&
+                    parseInt(data3[2].ADC24) >= 18000 
+                ) return num+=1;
+            
+        }
 
-    // const showindex = async () => {
-    //     const response = await fetch('http://10.64.58.169:8080/api/sensor/:date',{
-    //         method: 'GET',
 
-    //     })
-    //     .then(response)
-    // }
-    //moment(date).utcOffset(7).format('YYYY-MM-DD hh:mm:ss a');
-
+    }
     return (
         <View style={styles.container}>
             <Text style={{ fontWeight: '700', fontSize: 22, marginTop: 60 ,textAlign: 'center', color: '#000'}}>ประวัติ</Text>
@@ -192,7 +156,8 @@ const History = () => {
                 onCancel={() => { setOpen(false) }}
             />
             
-            {TestNow()}
+            {/* {TestNow()} */}
+
 
             {data.map((data, index) => {
                 
