@@ -18,6 +18,9 @@ type ADC = {
 type indexprop = {
     data: ADC
     setData:(newdata:ADC)=>void
+
+    data3: ADC[]
+    setData3:(newdata3:ADC[])=>void
 }
 
 export const MyContext = createContext <indexprop> ({data: {
@@ -34,8 +37,11 @@ export const MyContext = createContext <indexprop> ({data: {
     ADC33: '',
     ADC34: '',
     },
-    setData:(newdata:ADC)=>null
-});
+    setData:(newdata:ADC)=>null,
+    data3: [],
+    setData3:(newdata3:ADC[])=>null,
+}
+);
 interface AuthContextProviderProps {
     children: JSX.Element;
 }
@@ -54,8 +60,10 @@ function TestProvider(props: AuthContextProviderProps){
         ADC33: '',
         ADC34: '',
     });
+    const [data3, setData3] = useState<ADC[]>([])
+
     return(
-        <MyContext.Provider value={{data,setData}}>
+        <MyContext.Provider value={{data,setData,data3,setData3}}>
             {props.children}
         </MyContext.Provider>
     )

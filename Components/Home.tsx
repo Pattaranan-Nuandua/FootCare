@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, StyleSheet, View, SafeAreaView, Dimensions, Button, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -6,22 +6,22 @@ import { RouteProp } from '@react-navigation/native';
 import { MyContext } from './TestProvider';
 
 interface User {
-    id: number;
+    id: string;
     username: string;
     fullname: string;
     email: string;
     surname: string;
-    age: number;
+    age: string;
     gender: string;
-    weight: number;
-    high: number;
+    weight: string;
+    high: string;
 }
-const Home = ({ route, navigation }) => {
+const Home = ({ navigation, route }) => {
     const [error, setError] = useState<Error | null>(null);
     const [accessToken, setAccessToken] = useState<string>('');
     const [isLoading, setLoading] = useState<boolean>(true);
-    const [user, setUser] = useState<User>({
-        id: 0,
+    const [user, setUser] = useState({
+        id: '',
         username: '',
         email: '',
         fullname: '',
@@ -31,51 +31,108 @@ const Home = ({ route, navigation }) => {
         weight: 0,
         high: 0,
     });
-    const fetchUser = async (userId: number, token: string) => {
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                const token = await AsyncStorage.getItem('accessToken');
+                if (token) {
+                    setAccessToken(token);
+                    const userData = await AsyncStorage.getItem('user');
+                    if (userData) {
+                        const parsedUserData = JSON.parse(userData);
+                        setUser(parsedUserData);
+                        if (parsedUserData.id) {
+                            const response = await fetch(`http://192.168.188.66:3001/users/${parsedUserData.id}`, {
+                                method: 'GET',
+                                headers: {
+                                    //'Content-Type': 'application/json',
+                                    Authorization: `Bearer ${token}`,
+                                },
+                            });
+                            if (response.ok) {
+                                const { data } = await response.json();
+                                setUser({
+                                    id: data.userData.id,
+                                    username: data.userData.username,
+                                    fullname: data.userData.fullname,
+                                    email: data.userData.email,
+                                    surname: data.userData.surname,
+                                    age: data.userData.age,
+                                    gender: data.userData.gender,
+                                    weight: data.userData.weight,
+                                    high: data.userData.high,
+                                });
+                            } else {
+                                throw new Error('Error fetching user data');
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadData();
+    }, []);
+    console.log(user);
+
+    /*const fetchUser = async (userId: number, token: string) => {
         try {
-            const  userId = 59;
             const response = await fetch(`http://10.64.57.59:3001/users/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                
             });
-            console.log(response);
-            if (!response.ok) {
+            if (response.ok) {
+                const { data } = await response.json();
+                setUser({
+                    id: data.userData.id,
+                    username: data.userData.username,
+                    fullname: data.userData.fullname,
+                    email: data.userData.email,
+                    surname: data.userData.surname,
+                    age: data.userData.age,
+                    gender: data.userData.gender,
+                    weight: data.userData.weight,
+                    high: data.userData.high,
+                });
+            } else {
                 throw new Error('Error fetching user data');
             }
-            const { data } = await response.json(); // extract user data from the "data" property
-            setUser({
-                id: data.id,
-                username: data.username,
-                fullname: data.fullname,
-                email: data.email,
-                surname: data.surname,
-                age: data.age,
-                gender: data.gender,
-                weight: data.weight,
-                high: data.high,
-            });
         } catch (error) {
             console.error('Error fetching user data:', error);
             setError(error);
         }
     };
     useEffect(() => {
-        console.log(user);
-        AsyncStorage.getItem('accessToken')
-            .then((token) => {
-                if (token && user) { // only fetch user data if user is logged in
+        const loadData = async () => {
+            try {
+                const token = await AsyncStorage.getItem('accessToken');
+                if (token) {
                     setAccessToken(token);
-                    fetchUser(user.id, token);
+                    const userData = await AsyncStorage.getItem('user');
+                    if (userData) {
+                        const parsedUserData = JSON.parse(userData);
+                        setUser(parsedUserData);
+                        if (parsedUserData.id) {
+                            await fetchUser(parsedUserData.id, token);
+                        }
+                    }
                 }
-            })
-            .catch(setError)
-            .finally(() => setLoading(false));
-    }, [user.id]);
-
+            } catch (error) {
+                console.error('Error loading data:', error);
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadData();
+    }, [setAccessToken, setUser, setError]);*/
     if (isLoading) {
         return (
             <View>
@@ -91,9 +148,13 @@ const Home = ({ route, navigation }) => {
             </View>
         );
     }
-
-    const { data } = useContext(MyContext);
+    /////////////====================================
+    const { data, data3 } = useContext(MyContext);
     const checkFoot = () => {
+        console.log("data3 : ", data3);
+        if (data3.length === 3) {
+            // if(data3[0].ADC11 )
+        }
         if (
             parseInt(data.ADC11) >= 10000 &&
             parseInt(data.ADC12) >= 10000 &&
@@ -160,6 +221,15 @@ const Home = ({ route, navigation }) => {
                         <Text style={{ marginBottom: 10, }}>{'อุปกรณ์:'} </Text>
                         <Text style={{ marginBottom: 10, }}>{'สถานะอุปกรณ์:'} </Text>
                         <Text style={{ marginBottom: 10, }}>{'Foot Type:'} {checkFoot()}</Text>
+                        <Text>{"data3.length :" + data3.length}</Text>
+                        {data3.length === 3 ?
+                            <View>
+                                <Text>{"data3[0].ADC11 :" + data3[0].ADC11}</Text>
+                                <Text>{"data3[1].ADC11 :" + data3[1].ADC11}</Text>
+                                <Text>{"data3[2].ADC11: " + data3[2].ADC11}</Text>
+                            </View> :
+                            <Text>Loading..</Text>
+                        }
                     </View>
                 </View>
             </View>

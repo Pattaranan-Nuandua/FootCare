@@ -3,10 +3,9 @@ const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const session = require("express-session");
-const MySQLStore = require("express-mysql-session")(session);
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+// Secret key for JWT
+const JWT_SECRET = 'mysecretkey';
 
 app.use(cors());
 app.use(bodyParser.json())
@@ -20,6 +19,55 @@ const db = mysql.createConnection({
     database: 'Wearable-2023'
 })
 
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    db.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (error, results) => {
+        if (error) {
+            console.error(error);
+            res.status(500).json({ status: 'error', message: 'Internal server error' });
+        } else if (results.length > 0) {
+            const user = results[0];
+            const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+            res.json({ status: 'ok', accessToken: token, userData: user });
+        } else {
+            res.status(401).json({ status: 'error', message: 'Invalid username or password' });
+        }
+    });
+});
+
+app.get("/users/:id", (req, res) => {
+    const { id } = req.params;
+    const authorizationHeader = req.headers.authorization;
+    if (!authorizationHeader) {
+        return res.status(401).json({ error: "Access token is missing" });
+    }
+    const token = authorizationHeader.split(' ')[1]; // Extract token from "Bearer <token>"
+    // Verify the access token
+    try {
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        // Fetch the user data
+        db.query("SELECT * FROM users WHERE id = ?", [id], (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: "Error fetching user" });
+            } else if (result.length == 0) {
+                res.status(404).json({ error: "User not found" });
+            } else {
+                const userData = result[0];
+                if (decoded.userId != userData.id) {
+                    return res.status(403).json({ error: "Access denied" });
+                }
+                res.json({ status: 'ok', userData });
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(401).json({ error: "Invalid access token" });
+    }
+});
+
+
+
 app.get("/", (req, res) => {
     db.query("SELECT * FROM users", (err, result) => {
         if (err) {
@@ -31,7 +79,7 @@ app.get("/", (req, res) => {
     });
 });
 //try
-app.get("/users/:id", (req, res) => {
+/*app.get("/users/:id", (req, res) => {
     const userId = req.params.id;
     const accessToken = req.headers.authorization;
     if (!accessToken) {
@@ -59,7 +107,7 @@ app.get("/users/:id", (req, res) => {
         console.error(err);
         return res.status(401).json({ error: "Invalid access token" });
     }
-});
+});*/
 
 
 app.post("/show/index", (req, res) => {
@@ -136,7 +184,7 @@ app.post("/add/index", (req, res) => {
         }
     })
 })
-app.post('/login', (req, res) => {
+/*app.post('/login', (req, res) => {
     const { username, password } = req.body;
     db.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (err, result) => {
         if (err) {
@@ -173,7 +221,7 @@ app.post('/login', (req, res) => {
             });
         });
     });
-});
+});*/
 
 app.post("/add_data", (req, res) => {
     console.log("Received POST request"); // Add this line

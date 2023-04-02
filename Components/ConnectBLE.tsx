@@ -10,7 +10,7 @@ const SERVICE_UUID = "fe8775b4-243b-4aae-a7b8-c4c3ed0f55e3"; //use
 const CHARACTERISTIC_BLE = "ae41c84a-2fc1-4b66-8531-02e76eb67315"; //use
 
 function DeviceData({ navigation }) {
-    const { data, setData } = useContext(MyContext)
+    const { data, setData ,data3 ,setData3 } = useContext(MyContext)
     //console.log("DeviceData", data);
     const handleAddIndex = async () => {
         const response = await fetch('http://10.64.57.59:3001/add/index', {
@@ -72,12 +72,18 @@ function DeviceData({ navigation }) {
                     CHARACTERISTIC_BLE,
                     (error, characteristic: any) => {
                         if (characteristic?.value != null) {
-                            setData(base64.decode(characteristic?.value));
+                            // setData(base64.decode(characteristic?.value));
                             //console.log(base64.decode(characteristic.value))
                             //console.log(characteristic.value)
                             console.log('Update Received: ', base64.decode(characteristic?.value));
                             const valueString = characteristic?.value.toString();
-                            setData(JSON.parse(base64.decode(valueString)));
+                            setData(JSON.parse(base64.decode(valueString)));///use
+                            let tempData3 = data3
+                            if(tempData3.length === 3){
+                                tempData3.shift()//ลบตัวแรก
+                            }
+                            tempData3.push(JSON.parse(base64.decode(valueString)))   
+                            setData3(tempData3) 
                             //navigation.navigate('Insole');
                             //setInterval(handleAddIndex,1000);
                         }

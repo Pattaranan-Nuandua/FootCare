@@ -11,13 +11,13 @@ const Login = ({ route, navigation }) => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [user, setUser] = useState<object | null>(null);
-
+    const [userData, setUserData] = useState(null);
     const handleLogin = async () => {
         if (username.length === 0 || password.length === 0) {
             Alert.alert('กรุณากรอกข้อมูลให้ครบถ้วน');
         } else {
             try {
-                const response = await fetch('http://10.64.57.59:3001/login', {
+                const response = await fetch('http://192.168.188.66:3001/login', {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json',
@@ -28,23 +28,21 @@ const Login = ({ route, navigation }) => {
                         password,
                     }),
                 });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    const errorMessage = errorData.message || 'เกิดข้อผิดพลาดในการเชื่อมต่อ';
-                    throw new Error(errorMessage);
-                }
-
-                const data = await response.json();
-                console.log(data);
-
-                if (data.status === 'ok') {
-                    await AsyncStorage.setItem('@accessToken', JSON.stringify(data.accessToken));
-                    console.log(data.accessToken);
-                    Alert.alert('เข้าสู่ระบบสำเร็จ');
-                    navigation.navigate('BottomTabNavScreenGroup', { user: data });
+                if (response.status >= 200 && response.status <= 299) {
+                    const data = await response.json();
+                    console.log(data);
+                    const accessToken = data?.accessToken;
+                    if (data.status === 'ok') {
+                        await AsyncStorage.setItem('@accessToken', JSON.stringify(data.accessToken));
+                        setUserData(data.userData); // Set the user data state
+                        navigation.navigate('BottomTabNavScreenGroup', { userData: data.userData });
+                        Alert.alert('เข้าสู่ระบบสำเร็จ');
+                    } else {
+                        Alert.alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+                    }
                 } else {
-                    Alert.alert(data.status, data.message);
+                    const errorMessage = (await response.json())?.message || 'เกิดข้อผิดพลาดในการเชื่อมต่อ';
+                    throw new Error(errorMessage);
                 }
             } catch (err) {
                 console.error('Error logging in:', err);
