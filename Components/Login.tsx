@@ -1,56 +1,47 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useContext } from 'react';
 import { StyleSheet, TextInput, View, Text, Image, Alert, TouchableOpacity, Dimensions, KeyboardAvoidingView, } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationHelpers, StackActions } from '@react-navigation/native';
 import logofoot from '../Image/logo.png';
+import { MyContext } from './TestProvider';
 
 const logo = Image.resolveAssetSource(logofoot).uri;
+interface LoginResponse {
+    accessToken: string;
+}
 
 const Login = ({ route, navigation }) => {
+    const [error, setError] = useState<Error | null>(null);
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [user, setUser] = useState<object | null>(null);
-    const [userData, setUserData] = useState(null);
+    const [user, setUser] = useState<string>('');
     const handleLogin = async () => {
-        if (username.length === 0 || password.length === 0) {
-            Alert.alert('กรุณากรอกข้อมูลให้ครบถ้วน');
-        } else {
-            try {
-                const response = await fetch('http://192.168.188.66:3001/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/json',
-                        Accept: 'application/json',
-                    },
-                    body: JSON.stringify({
-                        username,
-                        password,
-                    }),
-                });
-                if (response.status >= 200 && response.status <= 299) {
-                    const data = await response.json();
-                    console.log(data);
-                    const accessToken = data?.accessToken;
-                    if (data.status === 'ok') {
-                        await AsyncStorage.setItem('@accessToken', JSON.stringify(data.accessToken));
-                        setUserData(data.userData); // Set the user data state
-                        navigation.navigate('BottomTabNavScreenGroup', { userData: data.userData });
-                        Alert.alert('เข้าสู่ระบบสำเร็จ');
-                    } else {
-                        Alert.alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
-                    }
-                } else {
-                    const errorMessage = (await response.json())?.message || 'เกิดข้อผิดพลาดในการเชื่อมต่อ';
-                    throw new Error(errorMessage);
-                }
-            } catch (err) {
-                console.error('Error logging in:', err);
-                Alert.alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+        try {
+            const response = await fetch(`http://10.64.57.59:3001/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+            console.log('Response:', response);
+            if (response.ok) {
+                const { accessToken }: LoginResponse = await response.json();
+                console.log('Access token:', accessToken);
+                await AsyncStorage.setItem('accessToken', accessToken);
+                setUser({ username });
+                setUsername('');
+                setPassword('');
+                navigation.navigate('BottomTabNavScreenGroup', { accessToken });
+            } else {
+                throw new Error('Error logging in');
             }
+        } catch (error) {
+            console.error('Error logging in:', error);
+            setError(error);
         }
     };
-
     return (
         <View>
             <LinearGradient
@@ -107,7 +98,6 @@ const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height,
-
     },
     image: {
         marginTop: 120,
@@ -165,7 +155,6 @@ const styles = StyleSheet.create({
         marginTop: 30,
         marginLeft: 140,
         width: 105,
-
     }
 })
 export default Login;

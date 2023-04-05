@@ -6,22 +6,24 @@ import { RouteProp } from '@react-navigation/native';
 import { MyContext } from './TestProvider';
 
 interface User {
-    id: string;
+    id: number;
     username: string;
-    fullname: string;
     email: string;
+    fullname: string;
     surname: string;
-    age: string;
+    age: number;
     gender: string;
-    weight: string;
-    high: string;
+    weight: number;
+    height: number;
+    details: string;
 }
+
 const Home = ({ navigation, route }) => {
     const [error, setError] = useState<Error | null>(null);
     const [accessToken, setAccessToken] = useState<string>('');
     const [isLoading, setLoading] = useState<boolean>(true);
-    const [user, setUser] = useState({
-        id: '',
+    const [user, setUser] = useState<User>({
+        id: 0,
         username: '',
         email: '',
         fullname: '',
@@ -29,43 +31,41 @@ const Home = ({ navigation, route }) => {
         age: 0,
         gender: '',
         weight: 0,
-        high: 0,
+        height: 0,
+        details:''
     });
     useEffect(() => {
         const loadData = async () => {
             try {
                 const token = await AsyncStorage.getItem('accessToken');
+                console.log('Token:', token);
                 if (token) {
                     setAccessToken(token);
-                    const userData = await AsyncStorage.getItem('user');
-                    if (userData) {
-                        const parsedUserData = JSON.parse(userData);
-                        setUser(parsedUserData);
-                        if (parsedUserData.id) {
-                            const response = await fetch(`http://192.168.188.66:3001/users/${parsedUserData.id}`, {
-                                method: 'GET',
-                                headers: {
-                                    //'Content-Type': 'application/json',
-                                    Authorization: `Bearer ${token}`,
-                                },
-                            });
-                            if (response.ok) {
-                                const { data } = await response.json();
-                                setUser({
-                                    id: data.userData.id,
-                                    username: data.userData.username,
-                                    fullname: data.userData.fullname,
-                                    email: data.userData.email,
-                                    surname: data.userData.surname,
-                                    age: data.userData.age,
-                                    gender: data.userData.gender,
-                                    weight: data.userData.weight,
-                                    high: data.userData.high,
-                                });
-                            } else {
-                                throw new Error('Error fetching user data');
-                            }
-                        }
+                    const response = await fetch(`http://10.64.57.59:3001/users/me`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    console.log('Response:', response);
+                    if (response.ok) {
+                        const { userData } = await response.json();
+                        console.log('User data:', userData);
+                        setUser({
+                            id: userData.id,
+                            username: userData.username,
+                            email: userData.email,
+                            fullname: userData.fullname,
+                            surname: userData.surname,
+                            age: Number(userData.age),
+                            gender: userData.gender,
+                            weight: Number(userData.weight),
+                            height: Number(userData.high),
+                            details: userData.details
+                        });
+                    } else {
+                        throw new Error('Error fetching user data');
                     }
                 }
             } catch (error) {
@@ -77,7 +77,6 @@ const Home = ({ navigation, route }) => {
         };
         loadData();
     }, []);
-    console.log(user);
 
     /*const fetchUser = async (userId: number, token: string) => {
         try {
@@ -217,11 +216,10 @@ const Home = ({ navigation, route }) => {
                         <Text style={{ marginBottom: 10, }}>{"คุณ"} {user.fullname} {user.surname}</Text>
                         <Text style={{ marginBottom: 10, }}>{'อายุ'} {user.age} {'ปี'}</Text>
                         <Text style={{ marginBottom: 10, }}>{'น้ำหนัก '}{user.weight} {'กิโลกรัม'}</Text>
-                        <Text style={{ marginBottom: 10, }}>{'ส่วนสูง'} {user.high} {'เซนติเมตร'}</Text>
-                        <Text style={{ marginBottom: 10, }}>{'อุปกรณ์:'} </Text>
-                        <Text style={{ marginBottom: 10, }}>{'สถานะอุปกรณ์:'} </Text>
+                        <Text style={{ marginBottom: 10, }}>{'ส่วนสูง'} {user.height} {'เซนติเมตร'}</Text>
+                        <Text style={{ marginBottom: 10, }}>{'รายละเอียด:'} {user.details}</Text>
                         <Text style={{ marginBottom: 10, }}>{'Foot Type:'} {checkFoot()}</Text>
-                        <Text>{"data3.length :" + data3.length}</Text>
+                        {/* <Text>{"data3.length :" + data3.length}</Text>
                         {data3.length === 3 ?
                             <View>
                                 <Text>{"data3[0].ADC11 :" + data3[0].ADC11}</Text>
@@ -229,7 +227,7 @@ const Home = ({ navigation, route }) => {
                                 <Text>{"data3[2].ADC11: " + data3[2].ADC11}</Text>
                             </View> :
                             <Text>Loading..</Text>
-                        }
+                        } */}
                     </View>
                 </View>
             </View>
@@ -257,7 +255,7 @@ const styles = StyleSheet.create({
     box: {
         backgroundColor: '#f0f0f0',
         width: 340,
-        height: 220,
+        height: 200,
         borderRadius: 18,
         //marginLeft:45,
         marginTop: 30,
