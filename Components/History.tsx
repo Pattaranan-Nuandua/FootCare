@@ -22,7 +22,7 @@ const History = () => {
         // const datestr = moment(date).format("YYYY-MM-DD hh:mm:ss ").slice(0, 10);
         // const timestr = date.toLocaleString('it-IT').slice(10);
 
-        const response = await fetch('http://10.64.57.59:3001/show/index', {
+        const response = await fetch('http://10.64.59.12:3001/show/index', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -54,67 +54,70 @@ const History = () => {
         const endColor = colorRange[colorIndex + 1] || startColor;
         return colorRange[colorIndex];
     }
-    const Detected = () => {
-        if(data3.length === 3 ){
-            if (
-                    parseInt(data3[0].ADC34) >= 20000 &&
-                    parseInt(data3[0].ADC31) >= 18000 &&
-                    parseInt(data3[0].ADC24) >= 18000 
-                ){
-                return num+=1 ;
-                }
-            else if (
+    // const Detected = () => {
+    //     if(data3.length === 3 ){
+    //         if (
+    //                 parseInt(data3[0].ADC34) >= 20000 &&
+    //                 parseInt(data3[0].ADC31) >= 18000 &&
+    //                 parseInt(data3[0].ADC24) >= 18000 
+    //             ){
+    //             return num+=1 ;
+    //             }
+    //         else if (
                 
-                    parseInt(data3[1].ADC11) >= 10000 &&
-                    parseInt(data3[1].ADC12) >= 10000 &&
-                    parseInt(data3[1].ADC13) >= 10000 &&
-                    parseInt(data3[1].ADC14) >= 10000 &&
-                    parseInt(data3[1].ADC21) >= 10000 &&
-                    parseInt(data3[1].ADC22) >= 10000 &&
-                    parseInt(data3[1].ADC23) >= 10000 &&
-                    parseInt(data3[1].ADC24) >= 10000 &&
-                    parseInt(data3[1].ADC31) >= 10000 &&
-                    parseInt(data3[1].ADC32) >= 10000 &&
-                    parseInt(data3[1].ADC33) >= 10000 &&
-                    parseInt(data3[1].ADC34) >= 10000
-                ) {
-                    return num+=1 ;
-                } 
-                else if (
-                    parseInt(data3[1].ADC11) >= 10000 &&
-                    parseInt(data3[1].ADC12) >= 10000 &&
-                    parseInt(data3[1].ADC13) >= 10000 &&
-                    parseInt(data3[1].ADC14) >= 10000 &&
-                    parseInt(data3[1].ADC22) >= 10000 &&
-                    parseInt(data3[1].ADC23) >= 10000 &&
-                    parseInt(data3[1].ADC24) >= 10000 &&
-                    parseInt(data3[1].ADC31) >= 10000 &&
-                    parseInt(data3[1].ADC33) >= 10000 &&
-                    parseInt(data3[1].ADC34) >= 10000
-                ) {
-                    return num+=1 ;;
-                } else if (
-                    parseInt(data3[1].ADC11) >= 10000 &&
-                    parseInt(data3[1].ADC12) >= 10000 &&
-                    parseInt(data3[1].ADC13) >= 10000 &&
-                    parseInt(data3[1].ADC14) >= 10000 &&
-                    parseInt(data3[1].ADC22) >= 10000 &&
-                    parseInt(data3[1].ADC31) >= 10000 &&
-                    parseInt(data3[1].ADC32) >= 10000 &&
-                    parseInt(data3[1].ADC33) >= 10000 &&
-                    parseInt(data3[1].ADC34) >= 10000
-                ) {
-                    return num+=1 ;;
-                }
-                else if(
-                    parseInt(data3[2].ADC34) >= 20000 &&
-                    parseInt(data3[2].ADC31) >= 18000 &&
-                    parseInt(data3[2].ADC24) >= 18000 
-                ) return num+=1;
+    //                 parseInt(data3[1].ADC11) >= 10000 &&
+    //                 parseInt(data3[1].ADC12) >= 10000 &&
+    //                 parseInt(data3[1].ADC13) >= 10000 &&
+    //                 parseInt(data3[1].ADC14) >= 10000 &&
+    //                 parseInt(data3[1].ADC21) >= 10000 &&
+    //                 parseInt(data3[1].ADC22) >= 10000 &&
+    //                 parseInt(data3[1].ADC23) >= 10000 &&
+    //                 parseInt(data3[1].ADC24) >= 10000 &&
+    //                 parseInt(data3[1].ADC31) >= 10000 &&
+    //                 parseInt(data3[1].ADC32) >= 10000 &&
+    //                 parseInt(data3[1].ADC33) >= 10000 &&
+    //                 parseInt(data3[1].ADC34) >= 10000
+    //             ) {
+    //                 return num+=1 ;
+    //             } 
+    //             else if (
+    //                 parseInt(data3[1].ADC11) >= 10000 &&
+    //                 parseInt(data3[1].ADC12) >= 10000 &&
+    //                 parseInt(data3[1].ADC13) >= 10000 &&
+    //                 parseInt(data3[1].ADC14) >= 10000 &&
+    //                 parseInt(data3[1].ADC22) >= 10000 &&
+    //                 parseInt(data3[1].ADC23) >= 10000 &&
+    //                 parseInt(data3[1].ADC24) >= 10000 &&
+    //                 parseInt(data3[1].ADC31) >= 10000 &&
+    //                 parseInt(data3[1].ADC33) >= 10000 &&
+    //                 parseInt(data3[1].ADC34) >= 10000
+    //             ) {
+    //                 return num+=1 ;;
+    //             } else if (
+    //                 parseInt(data3[1].ADC11) >= 10000 &&
+    //                 parseInt(data3[1].ADC12) >= 10000 &&
+    //                 parseInt(data3[1].ADC13) >= 10000 &&
+    //                 parseInt(data3[1].ADC14) >= 10000 &&
+    //                 parseInt(data3[1].ADC22) >= 10000 &&
+    //                 parseInt(data3[1].ADC31) >= 10000 &&
+    //                 parseInt(data3[1].ADC32) >= 10000 &&
+    //                 parseInt(data3[1].ADC33) >= 10000 &&
+    //                 parseInt(data3[1].ADC34) >= 10000
+    //             ) {
+    //                 return num+=1 ;;
+    //             }
+    //             else if(
+    //                 parseInt(data3[2].ADC34) >= 20000 &&
+    //                 parseInt(data3[2].ADC31) >= 18000 &&
+    //                 parseInt(data3[2].ADC24) >= 18000 
+    //             ) return num+=1;
             
-        }
+    //     }
 
 
+    // }
+    if(data.length > 0){
+        
     }
     return (
         <View style={styles.container}>
@@ -158,7 +161,7 @@ const History = () => {
             
             {/* {TestNow()} */}
 
-
+            
             {data.map((data, index) => {
                 
                 return (

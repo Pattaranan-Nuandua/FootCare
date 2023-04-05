@@ -9,18 +9,18 @@ const Active = () => {
         labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
         datasets: [
             {
-                data: [45, 28, 80, 99, 43, 50, 72]
+                data: [3314, 3509, 4220, 3219, 4232, 4255, 4813]
             }
         ]
     };
-
     const screenWidth = Dimensions.get("window").width;
     const chartConfig = {
-        backgroundGradientFrom: "#1E2923",
+        //backgroundGradientFrom: "#1E2923",
         backgroundGradientFromOpacity: 0,
-        backgroundGradientTo: "#08130D",
+        backgroundGradientTo: "#fff",
         backgroundGradientToOpacity: 0.5,
-        color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+        //color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+        color: (opacity = 1) => `rgba(0, 151, 156, ${opacity})`,
         strokeWidth: 2, // optional, default 3
         barPercentage: 0.5,
         useShadowColorFromDataset: false // optional
@@ -34,10 +34,11 @@ const Active = () => {
                 //style={graphStyle}
                 data={data}
                 width={screenWidth}
-                height={220}
-                yAxisLabel="$"
+                height={240}
+                yAxisLabel=""
                 chartConfig={chartConfig}
-                verticalLabelRotation={30}
+                verticalLabelRotation={15}
+                style={{justifyContent:'center',marginTop:30}}
             />
         </View>
     );

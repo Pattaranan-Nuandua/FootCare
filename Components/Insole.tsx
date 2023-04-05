@@ -101,7 +101,7 @@ const Insole = ({ navigation }) => {
                     return 'กำลังเดิน';
                 }
             }
-            else if (
+            if (
                 parseInt(data3[0].ADC11) >= 10000 && parseInt(data3[0].ADC11) <= 20000 ||
                 parseInt(data3[0].ADC12) >= 10000 && parseInt(data3[0].ADC12) <= 20000 ||
                 parseInt(data3[0].ADC13) >= 10000 && parseInt(data3[0].ADC13) <= 20000 ||
@@ -142,7 +142,7 @@ const Insole = ({ navigation }) => {
                 return 'กำลังยืน';
             }
 
-            else if (
+            if (
                 parseInt(data3[0].ADC11) >= 10000 && parseInt(data3[0].ADC11) <= 12000 ||
                 parseInt(data3[0].ADC12) >= 6000 && parseInt(data3[0].ADC12) <= 12000 ||
                 parseInt(data3[0].ADC13) >= 6000 && parseInt(data3[0].ADC13) <= 12000 ||
@@ -368,7 +368,7 @@ const Insole = ({ navigation }) => {
             //     ){
             //     return 'ไม่มีการลงน้ำหนักเท้า';
             // } 
-            else if (
+            if (
                 parseInt(data3[0].ADC11) <= 10 &&
                 parseInt(data3[0].ADC12) <= 10 &&
                 parseInt(data3[0].ADC13) <= 10 &&
@@ -496,22 +496,22 @@ const Insole = ({ navigation }) => {
             <View style={styles.dataContainer}>
                 <View style={styles.dataGroup}>
                     <View style={styles.dataGroup1}>
-                        <Text style={[styles.dataText1, { backgroundColor: getColors(data.ADC11) }]}>1</Text>
-                        <Text style={[styles.dataText2, { backgroundColor: getColors(data.ADC13) }]}>2</Text>
+                        <Text style={[styles.dataText1, { backgroundColor: getColors(data.ADC12) }]}>1</Text>
+                        <Text style={[styles.dataText2, { backgroundColor: getColors(data.ADC14) }]}>2</Text>
                         <Text style={[styles.dataText3, { backgroundColor: getColors(data.ADC21) }]}>3</Text>
-                        <Text style={[styles.dataText4, { backgroundColor: getColors(data.ADC12) }]}>4</Text>
+                        <Text style={[styles.dataText4, { backgroundColor: getColors(data.ADC11) }]}>4</Text>
                     </View>
                     <View>
-                        <Text style={[styles.dataText5, { backgroundColor: getColors(data.ADC23) }]}>5</Text>
-                        <Text style={[styles.dataText6, { backgroundColor: getColors(data.ADC22) }]}>6</Text>
-                        <Text style={[styles.dataText7, { backgroundColor: getColors(data.ADC14) }]}>7</Text>
-                        <Text style={[styles.dataText8, { backgroundColor: getColors(data.ADC32) }]}>8</Text>
+                        <Text style={[styles.dataText5, { backgroundColor: getColors(data.ADC22) }]}>5</Text>
+                        <Text style={[styles.dataText6, { backgroundColor: getColors(data.ADC23) }]}>6</Text>
+                        <Text style={[styles.dataText7, { backgroundColor: getColors(data.ADC13) }]}>7</Text>
+                        <Text style={[styles.dataText8, { backgroundColor: getColors(data.ADC33) }]}>8</Text>
                     </View>
                     <View>
                         <Text style={[styles.dataText9, { backgroundColor: getColors(data.ADC24) }]}>9</Text>
                         <Text style={[styles.dataText10, { backgroundColor: getColors(data.ADC34) }]}>10</Text>
                         <Text style={[styles.dataText11, { backgroundColor: getColors(data.ADC31) }]}>11</Text>
-                        <Text style={[styles.dataText12, { backgroundColor: getColors(data.ADC33) }]}>12</Text>
+                        <Text style={[styles.dataText12, { backgroundColor: getColors(data.ADC32) }]}>12</Text>
                     </View>
                 </View>
                 <BarChart />

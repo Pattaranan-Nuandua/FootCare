@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const mysql = require("mysql");
+const mysql = require('mysql2');
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
@@ -19,7 +19,7 @@ const db = mysql.createConnection({
     database: 'Wearable-2023'
 })
 
-app.post('/login', (req, res) => {
+app.post('/auth/login', (req, res) => {
     const { username, password } = req.body;
     db.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (error, results) => {
         if (error) {
@@ -35,38 +35,65 @@ app.post('/login', (req, res) => {
     });
 });
 
-app.get("/users/:id", (req, res) => {
-    const { id } = req.params;
-    const authorizationHeader = req.headers.authorization;
-    if (!authorizationHeader) {
-        return res.status(401).json({ error: "Access token is missing" });
-    }
-    const token = authorizationHeader.split(' ')[1]; // Extract token from "Bearer <token>"
-    // Verify the access token
-    try {
-        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        // Fetch the user data
-        db.query("SELECT * FROM users WHERE id = ?", [id], (err, result) => {
-            if (err) {
-                console.error(err);
-                res.status(500).json({ error: "Error fetching user" });
-            } else if (result.length == 0) {
-                res.status(404).json({ error: "User not found" });
-            } else {
-                const userData = result[0];
-                if (decoded.userId != userData.id) {
-                    return res.status(403).json({ error: "Access denied" });
-                }
-                res.json({ status: 'ok', userData });
-            }
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(401).json({ error: "Invalid access token" });
-    }
+app.get('/users/me', verifyToken, (req, res) => {
+    const userId = req.decoded.userId;
+    db.query('SELECT * FROM users WHERE id = ?', [userId], (error, results) => {
+        if (error) {
+            console.error(error);
+            res.status(500).json({ status: 'error', message: 'Internal server error' });
+        } else if (results.length > 0) {
+            const user = results[0];
+            res.json({ status: 'ok', userData: user });
+        } else {
+            res.status(404).json({ status: 'error', message: 'User not found' });
+        }
+    });
 });
 
+function verifyToken(req, res, next) {
+    const accessToken = req.headers.authorization?.split(' ')[1];
+    if (!accessToken) {
+        res.status(401).json({ status: 'error', message: 'Unauthorized' });
+        return;
+    }
+    jwt.verify(accessToken, JWT_SECRET, (err, decoded) => {
+        if (err) {
+            console.error(err);
+            res.status(401).json({ status: 'error', message: 'Unauthorized' });
+            return;
+        }
+        req.decoded = decoded;
+        next();
+    });
+}
 
+app.post('/forgot-password', (req, res) => {
+    const { username, new_password, confirm_password } = req.body;
+    // ตรวจสอบว่า username ตรงกับที่อยู่ในฐานข้อมูลหรือไม่
+    const selectUserQuery = `SELECT * FROM users WHERE username = '${username}'`;
+    db.query(selectUserQuery, (error, results) => {
+        if (error) throw error;
+        if (results.length > 0) {
+            // หาก username ตรงกับในฐานข้อมูล
+            const userId = results[0].id;
+            if (new_password === confirm_password) {
+                const updatePasswordQuery = `UPDATE users SET password = '${new_password}' WHERE id = ${userId}`;
+                db.query(updatePasswordQuery, (error, results) => {
+                    if (error) throw error;
+                    console.log('Password updated successfully');
+                    res.status(200).send('Password updated successfully');
+                });
+            } else {
+                console.log('New password and confirm password do not match');
+                res.status(400).send('New password and confirm password do not match');
+            }
+        } else {
+            // หาก username ไม่ตรงกับในฐานข้อมูล
+            console.log('Username not found');
+            res.status(404).send('Username not found');
+        }
+    });
+});
 
 app.get("/", (req, res) => {
     db.query("SELECT * FROM users", (err, result) => {
@@ -78,37 +105,6 @@ app.get("/", (req, res) => {
         }
     });
 });
-//try
-/*app.get("/users/:id", (req, res) => {
-    const userId = req.params.id;
-    const accessToken = req.headers.authorization;
-    if (!accessToken) {
-        return res.status(401).json({ error: "Access token is missing" });
-    }
-    // Verify the access token
-    try {
-        const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-        const userIdFromToken = decoded.userId;
-        if (userIdFromToken != userId) {
-            return res.status(403).json({ error: "Access denied" });
-        }
-        // Fetch the user data
-        db.query("SELECT * FROM users WHERE id = ?", [userId], (err, result) => {
-            if (err) {
-                console.error(err);
-                res.status(500).json({ error: "Error fetching user" });
-            } else if (result.length == 0) {
-                res.status(404).json({ error: "User not found" });
-            } else {
-                res.json(result[0]);
-            }
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(401).json({ error: "Invalid access token" });
-    }
-});*/
-
 
 app.post("/show/index", (req, res) => {
     const { date, date2 } = req.body
@@ -244,7 +240,52 @@ app.post("/add_data", (req, res) => {
     }
 })
 
+///web
 
+app.post('/user/add', (req, res) => {
+    const { namedoctor, username, email, password, place } = req.body
+    db.query("INSERT INTO userdoctor (namedoctor,username,email,password,place) VALUES(?,?,?,?,?)", [namedoctor, username, email, password, place], (err, result) => {
+        if (err)
+            console.log(err);
+        else {
+            res.json({ message: "User Added" });
+            console.log('Add user');
+        }
+
+    })
+})
+
+app.get('/userdoctor', (req, res) => {
+    db.query("SELECT * FROM userdoctor", (err, result) => {
+        res.send(result);
+    })
+})
+
+app.post('/user/find', (req, res) => {
+    const { username, password } = req.body
+    db.query("SELECT * FROM userdoctor WHERE username= ? and password= ?", [username, password], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if (result.length === 0) {
+                res.json({ message: "No" })
+            }
+            res.send(result);
+            console.log("Success");
+        }
+    })
+})
+
+app.get("/user/dek", (req, res) => {
+    db.query('SELECT * FROM index_data', (err, result) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log('Showdata')
+            res.send(result);
+        }
+    })
+})
 
 app.listen(3001, () => {
     console.log("Yey, your server is running on port 3001");
